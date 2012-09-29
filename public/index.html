@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="Presenter">
+	<head>
+		<title>C.Present - Presentation</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+
+		<link rel="stylesheet" type="text/css" href="assets/css/presenter.css" />
+
+	</head>
+	<body ng-style="{backgroundColor:bg,color:txt}" ng-controller="PresentationManagerController" style="cursor:none;" ng-show="live">
+		<div id="slide1" class="fade slide1 slide" ui-show='!currentSlide'>
+			<div ng-class="[h,v]" class="fade" ui-show='!clear'><div ng-bind-html="slide[0]"></div></div>
+		</div>
+		<div id="slide2" class="fade slide3 slide" ui-show='currentSlide'>
+			<div ng-class="[h,v]" class="fade" ui-show='!clear'><div ng-bind-html="slide[1]"></div></div>
+		</div>
+		<div id="blackout" ui-show="black" class="fade"></div>
+		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+		<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="assets/js/angular.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap-colorpicker.js"></script>
+		<script type="text/javascript" src="assets/js/angular-ui.js"></script>
+		<script type="text/javascript" src="assets/js/angular-sanitize.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="assets/js/presenter.js"></script>
+	</body>
+</html>
