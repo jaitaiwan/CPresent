@@ -84,7 +84,7 @@ Presenter.factory('Server',function () {
 	}
 });
 
-PresentationManagerController = ['$scope','Songs','Server', function($scope,Songs,io) {
+PresentationManagerController = ['$scope','Songs','Server', function($scope,Songs,io2) {
 	$scope.songlist = Songs.getAll()
 	$scope.setlist = [];
 	$scope.lyrics = [];
@@ -96,8 +96,20 @@ PresentationManagerController = ['$scope','Songs','Server', function($scope,Song
 	$scope.tester = "";
 	$scope.callLive = function () {
 		$scope.live = $scope.isLive ? '#33B5E5' : '#ffffff';
-		io.toggleLive($scope.isLive);
+		io2.toggleLive($scope.isLive);
 	}
+
+	socket = io.connect();
+	socket.on('connect',function() {
+		socket.on('set:setlist',function(data) {
+			$scope.setlist = data;
+			$scope.$watch('setlist',function (n,o) {
+				socket.emit('set:setlist',$scope.setlist);
+			},true);
+			$scope.$digest();
+		});
+		socket.emit('get:setlist',{});
+	});
 }];
 
 SongListController = ['$scope','Songs',function ($scope,Songs) {

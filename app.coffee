@@ -32,6 +32,8 @@ status = {
 	black:false;
 };
 
+setlist = [];
+
 iq.sockets.on 'connection', (socket) ->
 
 	socket.on 'go:live', (data) ->
@@ -63,8 +65,16 @@ iq.sockets.on 'connection', (socket) ->
 		status.live = data.stat
 
 	socket.on 'get:status', (data) ->
-		console.log('Sending Status: ',status)
+		console.log 'Sending Status: ', status
 		socket.emit 'set:status', status
+
+	socket.on 'set:setlist', (data) ->
+		console.log 'set:setlist', data
+		setlist = data
+
+	socket.on 'get:setlist', (data) ->
+		console.log 'get:setlist', data
+		socket.emit 'set:setlist', setlist
 
 
 server.listen 8080
