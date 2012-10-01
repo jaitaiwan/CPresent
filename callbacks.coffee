@@ -1,5 +1,6 @@
 mongo = require 'mongojs'
-db = mongo.connect('presentdb',['songs','setlists']);
+config = require './config'
+db = mongo.connect(config.db,['songs','setlists']);
 ObjectID = mongo.ObjectId
 
 ###db.songs.update { _id : ObjectID("505c335f132333813a2c86ad")}, {$set:

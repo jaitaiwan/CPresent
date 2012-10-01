@@ -14,6 +14,8 @@ app.configure 'development', ->
 ##	app.use "/images", express.static "./templates/images"
 ##	app.use "/scripts", express.static "./templates/scripts"
 
+config = require './config'
+
 try
   routes = require './router'
   app[route.method] route.matches,route.callback for route in routes
@@ -77,4 +79,4 @@ iq.sockets.on 'connection', (socket) ->
 		socket.emit 'set:setlist', setlist
 
 
-server.listen 8080
+server.listen config.port
