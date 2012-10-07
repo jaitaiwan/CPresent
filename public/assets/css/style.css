@@ -332,6 +332,14 @@ ul li, ol li
 	cursor: default;
 }
 
+.setlist li>div {
+	display: none;
+}
+
+.setlist li:hover>div {
+	display:inline-block;
+}
+
 .col2 .paragraph
 {
 	text-align: left;
@@ -519,7 +527,8 @@ li.ui-animate {
 
 .input.focused .right, .input.focused .left, .input.hovered .right, .input.hovered .left, .tag
 {
-	background-color:#33B5E5;
+	/*background-color:#33B5E5;*/
+	background-color:turquoise;
 }
 
 .input input

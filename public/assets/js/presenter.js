@@ -30,9 +30,18 @@ Presenter.factory('socket', ['$rootScope', function($rootScope) {
 	return socket;
 }]);
 
-PresentationManagerController = ['$scope','socket', function($scope,io) {
+PresentationManagerController = ['$scope','socket','$timeout', function($scope,io,$timeout) {
 	$scope.currentSlide = 1;
 	$scope.slide = new Array(2);
+	doTime = function () {
+		now = new Date();
+		hour = now.getHours().toString().length == 1 ? "0" + now.getHours() : now.getHours();
+		minute = now.getMinutes().toString().length == 1 ? "0" + now.getMinutes() : now.getMinutes();
+		second = now.getSeconds().toString().length == 1 ? "0" + now.getSeconds() : now.getSeconds();
+		$scope.clock = hour + ":" + minute + ":" + second;
+		$timeout(doTime,500);
+	}
+	doTime();
 
 	io.onEvent('connect',function(data) {
 		io.onEvent('set:status',function(data2) {

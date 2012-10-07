@@ -169,7 +169,7 @@ SetListController = function ($scope) {
 		song.lyrics += "\n\n"
 		lyrics = song.lyrics.match(/^([\s\S]*?)(?=\n\n|$\w)/gim);
 		for(i=0;i<lyrics.length;i++) {
-			reg = /(?:\n)*((?:Verse [0-9]|Chorus(?:| [0-9])|Tag|Bridge)\n)*([\s\S]*)/gim
+			reg = /(?:\n)*((?:Verse [0-9]|Chorus(?:| [0-9])|Tag|Bridge|Pre-Chorus)\n)*([\s\S]*)/gim
 			matcher = reg.exec(lyrics[i]);
 			lyrics[i] = {tag: (typeof matcher[1] !== "undefined") ? matcher[1] : "" , para:matcher[2].replace(/\n/gim,"<br />")};
 		}
