@@ -1,16 +1,26 @@
 ###
 app.coffee
 ###
-
+coffeescript = require 'coffee-script'
 express = require 'express'
 io = require 'socket.io'
 app = express()
 server = require('http').createServer app
 path = require 'path'
 iq = io.listen server
+cs = require 'connect-coffee-script'
 app.configure 'development', ->
 	app.use express.bodyParser()
+	app.use cs
+		force:true
+		src: path.normalize './pub-src'
+		dest: path.normalize './public'
+		bare: true
+		compile: (str, options) ->
+			options.bare = true
+			coffeescript.compile str, options
 	app.use express.static path.normalize './public'
+	app.use express.directory path.normalize './public'
 ##	app.use "/images", express.static "./templates/images"
 ##	app.use "/scripts", express.static "./templates/scripts"
 
@@ -22,19 +32,19 @@ try
 catch err
   console.error err
 
-iq.set('log level',2);
+iq.set('log level',2)
 
-status = {
-	bg:"#ffffff",
-	txt:"#000000",
-	v:"mid",
-	h:"cen",
-	live:false;
-	clear:false;
-	black:false;
-};
+status =
+	bg:"#ffffff"
+	txt:"#000000"
+	v:"mid"
+	h:"cen"
+	live:false
+	clear:false
+	black:false
 
-setlist = [];
+
+setlist = []
 
 iq.sockets.on 'connection', (socket) ->
 
