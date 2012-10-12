@@ -49,7 +49,6 @@ setlist = []
 iq.sockets.on 'connection', (socket) ->
 
 	socket.on 'go:live', (data) ->
-		console.log data
 		socket.broadcast.emit 'go:live', data
 		status = data
 		status.live = true
@@ -57,35 +56,28 @@ iq.sockets.on 'connection', (socket) ->
 		status.black = false
 
 	socket.on 'go:black', (data) ->
-		console.log data
 		socket.broadcast.emit 'go:black', data
 		status.black = data.stat
 
 	socket.on 'go:clear', (data) ->
-		console.log data
 		socket.broadcast.emit 'go:clear', data
 		status.clear = data.stat
 
 	socket.on 'next:slide', (data) ->
-		console.log data
 		socket.broadcast.emit 'next:slide', data
 		status.text = data.lyric
 
 	socket.on 'toggle:live', (data) ->
-		console.log data
 		socket.broadcast.emit 'toggle:live', data
 		status.live = data.stat
 
 	socket.on 'get:status', (data) ->
-		console.log 'Sending Status: ', status
 		socket.emit 'set:status', status
 
 	socket.on 'set:setlist', (data) ->
-		console.log 'set:setlist', data
 		setlist = data
 
 	socket.on 'get:setlist', (data) ->
-		console.log 'get:setlist', data
 		socket.emit 'set:setlist', setlist
 
 
