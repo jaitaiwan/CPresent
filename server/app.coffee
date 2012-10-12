@@ -32,7 +32,7 @@ try
 catch err
   console.error err
 
-iq.set('log level',2)
+iq.set('log level',3)
 
 status =
 	bg:"#ffffff"
