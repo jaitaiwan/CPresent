@@ -35,19 +35,24 @@ catch err
 iq.set('log level',2)
 
 status =
-	bg:"#ffffff"
-	txt:"#000000"
-	v:"mid"
-	h:"cen"
+	bg:config.slideBackgroundColor
+	txt:config.slideTextColor
+	v:config.slideTextVerticalOrientation
+	h:config.slideTextHorizontalOrientation
 	live:false
 	clear:false
 	black:false
 
-
-setlist = []
+control =
+	setlist: []
+	preview: []
+	live: []
 
 iq.sockets.on 'connection', (socket) ->
-
+	socket.on 'setup:control', (data) ->
+		socket.emit 'initialise:control',
+			control: control
+			status: status
 	socket.on 'go:live', (data) ->
 		socket.broadcast.emit 'go:live', data
 		status = data
@@ -75,10 +80,10 @@ iq.sockets.on 'connection', (socket) ->
 		socket.emit 'set:status', status
 
 	socket.on 'set:setlist', (data) ->
-		setlist = data
+		control.setlist = data
 
 	socket.on 'get:setlist', (data) ->
-		socket.emit 'set:setlist', setlist
+		socket.emit 'set:setlist', control.setlist
 
 
 server.listen config.port
