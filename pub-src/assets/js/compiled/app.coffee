@@ -112,7 +112,7 @@ SongListController = ['$scope','Songs', ($scope,Songs) ->
 			$scope.isNew = false
 
 	$scope.saveSong = (song,n) ->
-		Songs.edit(song) if !n else Songs.create song
+		if n is true then Songs.create(song) else Songs.edit song
 		$scope.$parent.songlist = Songs.getAll()
 		$scope.songEdit = false
 
