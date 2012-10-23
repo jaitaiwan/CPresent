@@ -445,7 +445,7 @@ ul li, ol li
 
 }
 
-.col3 h4 span
+.col3 h4>span
 {
 	font-size:8pt;
 	padding:3px;
@@ -454,9 +454,11 @@ ul li, ol li
 	top:-2px;
 }
 
-.col3 h4 span:nth-child(1)
+.col3 h4>div
 {
 	margin-left:10px;
+	position: relative;
+	top:4px;
 }
 
 /**
@@ -578,4 +580,50 @@ textarea
 	display:block;
 	width:100%;
 	height:100%;
+}
+
+.switch
+{
+	display:inline-block;
+	height:22px;
+	width:64px;
+	background-color:#eee;
+	position:relative;
+}
+
+.s_on
+{
+	position:absolute;
+	right:6px;
+}
+
+.s_off
+{
+	position: absolute;
+	left:6px;
+}
+
+.switch div
+{
+	height:18px;
+	width:29px;
+	background-color: turquoise;
+	position: absolute;
+	top:2px;
+	transition: left 0.3s ease, background-color 1s ease;
+  	-o-transition: left 0.3s ease, background-color 1s ease;
+  	-moz-transition: left 0.3s ease, background-color 1s ease;
+  	-webkit-transition: left 0.3s ease, background-color 1s ease;
+}
+
+.switch.on>div
+{
+	left:2px;
+	background-color: turquoise;
+}
+
+.switch.off>div
+{
+	left:31px;
+	background-color: #ddd;
 }

@@ -74,7 +74,7 @@
 			</div>
 			<div class="col3" ng-controller="LiveController">
 				<div class="pad">
-					<h4>Live <span class="live" ng-click="$parent.isLive = !$parent.isLive; callLive()" ng-style="{backgroundColor:live}">LIVE</span> <span class="black" ng-click="toggleBlack()">BLACK</span> <span class="clear" ng-click="toggleClear()">CLEAR</span>
+					<h4>Live <div class="switch" ng-click="$parent.isLive = !$parent.isLive; callLive()" ng-class="$parent.live"><span class="s_on">on</span><span class="s_off">off</span><div></div></div> <span class="black" ng-click="toggleBlack()">BLACK</span> <span class="clear" ng-click="toggleClear()">CLEAR</span>
 					</h4>
 					<span ng-repeat="section in prevLyrics" class="paragraph" ng-click="loadLyric(section);">
 						<div>

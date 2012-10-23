@@ -40,6 +40,11 @@ Presenter.factory 'Songs', ['$resource','$http','$rootScope', (resource, $http,$
 
 Presenter.factory 'Server', ->
 	socket = io.connect()
+	###
+	# We should place the setlist, live, and preview
+	# objects into the server service so we're not maintaining
+	# the state of multiple $scopes
+	###
 	goLive: (lyric, slideBgC, slideTxtC, slideH, slideV) ->
 		socket.emit 'go:live',
 			text: lyric
@@ -65,10 +70,11 @@ PresentationManagerController = ['$scope','Songs','Server', ($scope,Songs,io2) -
 	$scope.slideH = "cen"
 	$scope.prevLyrics = []
 	$scope.isLive = false
-	$scope.live = '#fff'
+	$scope.live = 'off'
 	$scope.tester = ""
 	$scope.callLive = ->
-		$scope.live = $scope.isLive ? '#33B5E5' : '#ffffff'
+		$scope.live = if $scope.isLive then 'on' else 'off'
+		console.log $scope.live
 		io2.toggleLive $scope.isLive
 
 	socket = io.connect()
