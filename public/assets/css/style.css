@@ -614,6 +614,7 @@ textarea
   	-o-transition: left 0.3s ease, background-color 1s ease;
   	-moz-transition: left 0.3s ease, background-color 1s ease;
   	-webkit-transition: left 0.3s ease, background-color 1s ease;
+  	font-size: 8pt
 }
 
 .switch.on>div
