@@ -586,7 +586,7 @@ textarea
 {
 	display:inline-block;
 	height:22px;
-	width:64px;
+	width:74px;
 	background-color:#eee;
 	position:relative;
 }
@@ -605,16 +605,18 @@ textarea
 
 .switch div
 {
-	height:18px;
-	width:29px;
+	height:17px;
+	width:32px;
 	background-color: turquoise;
 	position: absolute;
+	border-bottom: 1px solid #777;
+	padding-left:2px;
 	top:2px;
 	transition: left 0.3s ease, background-color 1s ease;
   	-o-transition: left 0.3s ease, background-color 1s ease;
   	-moz-transition: left 0.3s ease, background-color 1s ease;
   	-webkit-transition: left 0.3s ease, background-color 1s ease;
-  	font-size: 8pt
+  	font-size: 9pt
 }
 
 .switch.on>div
@@ -625,6 +627,6 @@ textarea
 
 .switch.off>div
 {
-	left:31px;
-	background-color: #ddd;
+	left:37px;
+	background-color: #aaa;
 }
