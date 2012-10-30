@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C.Present - Desktop Control</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/colorpicker.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/angular-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/ui.css" />
+
+	</head>
+	<body ng-app="Control">
+		<div ng-controller="ctrl">
+
+			<div class="col_right">
+
+				<div class="live">
+					<h2>live &mdash; {{currenttag}} <div class="switch" ng-click="toggleLive()" ng-class="live"><div ng-bind-html="live.toUpperCase()"></div></div></h4>
+					<iframe src="timecode.html"></iframe>
+				</div>
+
+				<div class="preview">
+					<h2>next &mdash; {{next}} <span class="menu">
+						<ul>
+							<li><span class="left" ng-click="changeLyricIndex('+')">&gt;</span><span class="right" ng-click="changeLyricIndex('-')">&lt;</span></li>
+							<li>text color
+								<div class="pref">
+									<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:slide.color}" data-color="{{slide.color}}" data-color-format="hex" id="cp2"></div>
+								</div>
+							</li>
+							<li>background
+								<div class="pref">
+									<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:slide.background}" data-color="{{slide.background}}" data-color-format="hex" id="cp"></div>
+								</div>
+							</li>
+							<li>vertical align 
+								<div class="pref">
+									<div class="tp" ng-click="align('v','top')"></div> 
+									<div class="md" ng-click="align('v','mid')"></div> 
+									<div class="bt" ng-click="align('v','bot')"></div>
+								</div>
+							</li>
+							<li>horizontal align 
+								<div class="pref">
+									<div class="left" ng-click='align("h","lef")'></div> 
+									<div class="center"  ng-click='align("h","cen")'></div> 
+									<div class="right"  ng-click='align("h","rig")'></div>
+								</div>
+							</li>
+							<li>select lyric
+								<div class="pref">not yet built</div>
+							</li>
+						</ul>
+					</span> <span class="goLive" ng-click="makeLive()"></span></h2>
+					<div class="slide" ng-style="{backgroundColor:slide.background,color:slide.color}">
+						<div ng-class="[slide.hAlign,slide.vAlign]">
+							<div ng-bind-html="slide.lyrics[slide.index].para"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col_left">
+				<h2>{{song.title}}</h2>
+				<span ng-repeat="section in control.live" class="paragraph" ng-click="nextSlide($index)">
+					<div>
+						<span class="tag" ng-show="section.subtag">{{section.tag}}</span><span ng-bind-html="section.para"></span>
+					</div>
+					<br />
+				</span>
+			</div>
+			<div class="setlist">
+				<div class="title">setlist</div>
+				<div class="pad">
+					<ol ui-sortable ui-options="{axis:'y'}" ng-model="setlist">
+						<li ng-repeat="item in control.setlist" ng-click="loadPreview($index)" ui-animate>{{item.title}} <div class="remove" ng-click="removeFromSetList($index)"></div></li>
+					</ol>
+				</div>
+			</div>
+			<div class="songlist">
+				<div class="title">songlist</div>
+				<div class="pad">
+					<div class="search" ng-class="[focus,hoverd]">
+						<input type="text" placeholder="Search songs..." ng-model="search" ng-change="shDelete()" />
+						<div class="remove" ng-style="delDisp" ng-click="search=''; shDelete()"></div>
+						<div class="left"></div>
+						<div class="right"></div>
+					</div>
+					<ul>
+						<li ng-repeat="song in songlist | filter:search" ng-click="addToSetList(song)">{{song.title}} <div class="edit" ng-click="editSong(song); $event.stopPropagation()"></div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+		<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="assets/js/angular.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap-colorpicker.js"></script>
+		<script type="text/javascript" src="assets/js/angular-ui.js"></script>
+		<script type="text/javascript" src="assets/js/angular-resource.js"></script>
+		<script type="text/javascript" src="assets/js/angular-sanitize.js"></script>
+		<script type="text/javascript" src="assets/js/angular-cookies.min.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="assets/js/compiled/ui.js"></script>
+	</body>
+</html>

@@ -586,47 +586,88 @@ textarea
 {
 	display:inline-block;
 	height:22px;
-	width:74px;
-	background-color:#eee;
+	width:76px;
+	background-color:#d1d1d1;
 	position:relative;
+	font-size: 9pt;
 }
 
 .s_on
 {
 	position:absolute;
-	right:6px;
+	right:4px;
+	text-align: center;
 }
 
 .s_off
 {
 	position: absolute;
-	left:6px;
+	left:4px;
 }
 
 .switch div
 {
-	height:17px;
-	width:32px;
-	background-color: turquoise;
+	height:18px;
+	width:37px;
+	background-color: #b5b5b5;
 	position: absolute;
+	border-top:1px solid #ddd;
 	border-bottom: 1px solid #777;
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
 	padding-left:2px;
-	top:2px;
-	transition: left 0.3s ease, background-color 1s ease;
-  	-o-transition: left 0.3s ease, background-color 1s ease;
-  	-moz-transition: left 0.3s ease, background-color 1s ease;
-  	-webkit-transition: left 0.3s ease, background-color 1s ease;
-  	font-size: 9pt
+	color:white;
+	top:1px;
+	text-align: center;
+	transition: left 0.3s ease, background-color 1s ease, border 1s ease;
+  	-o-transition: left 0.3s ease, background-color 1s ease, border 1s ease;
+  	-moz-transition: left 0.3s ease, background-color 1s ease, border 1s ease;
+  	-webkit-transition: left 0.3s ease, background-color 1s ease, border 1s ease;
+  	font-size: 9pt;
+  	border-radius:2px;
 }
 
 .switch.on>div
 {
-	left:2px;
+	left:1px;
 	background-color: turquoise;
+	border-bottom:1px solid #32B5A9;
+	border-left:1px solid #D6D6D6;
+	border-right:1px solid #D6D6D6;
+	border-top: 1px solid #41EADA;
 }
 
 .switch.off>div
 {
-	left:37px;
-	background-color: #aaa;
+	left:34px;
+	background-color: #b5b5b5;
+}
+
+button.state
+{
+
+}
+
+button.state>div
+{
+	height:4px;
+	width:80%;
+	background-color: #000;
+	border-radius: 2px;
+	margin-left: auto;
+	margin-right: auto;
+	transition: background-color 0.4s ease;
+  	-o-transition: background-color 0.4s ease;
+  	-moz-transition: background-color 0.4s ease;
+  	-webkit-transition: background-color 0.4s ease;
+}
+
+button.state>div.off
+{
+	background-color: black;
+}
+
+button.state>div.on
+{
+	background-color: turquoise;
 }

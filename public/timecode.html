@@ -8,13 +8,13 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/presenter.css" />
 
 	</head>
-	<body ng-style="{backgroundColor:bg,color:txt}" ng-controller="PresentationManagerController" style="cursor:none;" ng-show="live">
+	<body ng-style="{backgroundColor:status.background,color:status.color}" ng-controller="PresentationManagerController" style="cursor:none;" ng-show="status.liveState">
 		<div class="clock">{{clock}}</div>
 		<div id="slide1" class="fade slide1 slide" ui-show='!currentSlide'>
-			<div ng-class="[h,v]" class="fade" ui-show='!clear'><div ng-bind-html="slide[0]"></div></div>
+			<div ng-class="[status.hAlign,status.vAlign]" class="fade" ui-show='!status.clearState'><div ng-bind-html="slide[0]"></div></div>
 		</div>
 		<div id="slide2" class="fade slide3 slide" ui-show='currentSlide'>
-			<div ng-class="[h,v]" class="fade" ui-show='!clear'><div ng-bind-html="slide[1]"></div></div>
+			<div ng-class="[status.hAlign,status.vAlign]" class="fade" ui-show='!status.clearState'><div ng-bind-html="slide[1]"></div></div>
 		</div>
 		<div id="blackout" ui-show="black" class="fade"></div>
 		<script type="text/javascript" src="assets/js/jquery.min.js"></script>

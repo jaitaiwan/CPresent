@@ -79,7 +79,7 @@ PresentationManagerController = ['$scope','Songs','Server', ($scope,Songs,io2) -
 
 	socket = io.connect()
 	socket.on 'connect', ->
-		socket.on 'set:setlist', (data) ->
+		socket.once 'set:setlist', (data) ->
 			$scope.setlist = data
 			$scope.$watch 'setlist', (n,o) ->
 				socket.emit 'set:setlist', $scope.setlist
@@ -90,6 +90,9 @@ PresentationManagerController = ['$scope','Songs','Server', ($scope,Songs,io2) -
 			$scope.isLive = data.stat
 		socket.on 'go:black', (data) ->
 			$scope.black = data.stat
+		socket.on 'set:setlist', (data) ->
+			$scope.$apply ->
+				$scope.setlist = data
 ]
 
 SongListController = ['$scope','Songs', ($scope,Songs) ->

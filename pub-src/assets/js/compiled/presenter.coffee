@@ -1,7 +1,7 @@
 Presenter = angular.module 'Presenter', ['ui.directives','ngSanitize']
 
 Presenter.factory 'socket', ['$rootScope', ($rootScope) ->
-	socket = io.connect()
+	socket = io.connect('/newui')
 	socket.emitMessage = ->
 		args = Array.prototype.slice.call arguments
 		if args.length <= 0 then return
@@ -35,35 +35,24 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 	doTime()
 
 	io.onEvent 'connect', (data) ->
-		io.onEvent 'set:status', (data2) ->
-			$scope.bg = data2.bg
-			$scope.txt = data2.color
-			$scope.h = data2.h
-			$scope.v = data2.v
-			$scope.black = data2.black
-			$scope.clear = data2.clear
-			$scope.live = data2.live
-			nextSlide data2.text
-		io.emitMessage 'get:status'
+		io.onEvent 'setup:show', (data2) ->
+			$scope.status = data2.display
+			$scope.lyrics = data2.lyrics
+			nextSlide data2.display.index
+		io.emitMessage 'please:setup'
 
 	nextSlide = (lyrics) ->
+		if !$scope.lyrics[lyrics]? return false
 		switch $scope.currentSlide
 			when 0
-				$scope.slide[1] = lyrics;
+				$scope.slide[1] = $scope.lyrics[lyrics].para;
 				$scope.currentSlide = 1;
 			when 1
-				$scope.slide[0] = lyrics;
+				$scope.slide[0] = $scope.lyrics[lyrics].para;
 				$scope.currentSlide = 0;
 
-	io.onEvent 'go:live', (data) ->
-		$scope.bg = data.bg
-		$scope.txt = data.color
-		$scope.h = data.h
-		$scope.v = data.v
-		nextSlide data.text
-
-	io.onEvent 'toggle:live', (data) ->
-		$scope.live = data.stat
+	io.onEvent 'set:liveState', (data) ->
+		$scope.status.liveState = data
 
 	io.onEvent 'go:black', (data) ->
 		$scope.black = data.stat
@@ -72,7 +61,7 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 		$scope.clear = data.stat
 
 	io.onEvent 'next:slide', (data) ->
-		nextSlide data.lyric
+		nextSlide data
 ]
 
 resizeMe = ->
