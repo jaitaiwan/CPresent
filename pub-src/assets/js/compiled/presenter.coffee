@@ -42,7 +42,7 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 		io.emitMessage 'please:setup'
 
 	nextSlide = (lyrics) ->
-		if !$scope.lyrics[lyrics]? return false
+		if !$scope.lyrics[lyrics]? then return false
 		switch $scope.currentSlide
 			when 0
 				$scope.slide[1] = $scope.lyrics[lyrics].para;

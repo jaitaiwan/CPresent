@@ -81,7 +81,7 @@ Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 
 ]
 
-ctrl = ['$scope','Server','Songs', ($scope,srv, songs)->
+ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	## Initial setup
 	$scope.songlist = songs.getAll()
 	$('#cp').colorpicker({format:'hex'}).on 'changeColor', (ev) ->
@@ -104,26 +104,30 @@ ctrl = ['$scope','Server','Songs', ($scope,srv, songs)->
 		$scope.black = if n then 'on' else 'off'
 
 	$scope.$watch 'songIndex', (n, o) ->
-		if $scope.control
-			if !$scope.control.setlist? then return false
-			song = $scope.control.setlist[n]
-			$scope.next = song.title || ''
-			if !song.lyrics? then return false
-			song.lyrics += "\n\n"
-			lyrics = song.lyrics.match /^([\s\S]*?)(?=\n\n|$\w)/gim
-			nl = []
-			lastTag = ""
-			for lyric in lyrics
-				reg = /(?:\n)*((?:Verse [0-9]|Chorus(?:| [0-9])|Tag|Bridge|Pre-Chorus)\n)*([\s\S]*)/gim
-				matcher = reg.exec lyric
-				if matcher[1]?
-					lastTag = matcher[1]
-				nl.push
-					tag: lastTag
-					subtag: if matcher[1]? then true else false
-					para:matcher[2].replace /\n/gim, "<br />"
-			$scope.slide.lyrics = nl
-			$scope.slide.index = 0
+		_setupLive n
+
+	_setupLive = (n) ->
+		if $scope.control?
+			if !$scope.control.setlist[n]? then return false
+			songs.get $scope.control.setlist[n]._id, (data) ->
+				song = data
+				$scope.next = song.title || ''
+				if !song.lyrics? then return false
+				song.lyrics += "\n\n"
+				lyrics = song.lyrics.match /^([\s\S]*?)(?=\n\n|$\w)/gim
+				nl = []
+				lastTag = ""
+				for lyric in lyrics
+					reg = /(?:\n)*((?:Verse [0-9]|Chorus(?:| [0-9])|Tag|Bridge|Pre-Chorus)\n)*([\s\S]*)/gim
+					matcher = reg.exec lyric
+					if matcher[1]?
+						lastTag = matcher[1]
+					nl.push
+						tag: lastTag
+						subtag: if matcher[1]? then true else false
+						para:matcher[2].replace /\n/gim, "<br />"
+				$scope.slide.lyrics = nl
+				$scope.slide.index = 0
 	## Setup ui interaction with serv
 	$scope.toggleLive = () ->
 		srv.set 'liveState', !$scope.status.liveState
@@ -159,9 +163,25 @@ ctrl = ['$scope','Server','Songs', ($scope,srv, songs)->
 		srv.set 'index', prevSection
 
 	$scope.addToSetList = (song) ->
-		songs.get song._id, (data) ->
-			$scope.control.setlist.push(data)
-			srv.set 'setlist', $scope.control.setlist
+		$scope.control.setlist.push(song)
+		srv.set 'setlist', $scope.control.setlist
+		if !$scope.control.setlist[1]?
+			_setupLive 0
+
+	$scope.removeFromSetList = (index) ->
+		newArray = new Array()
+		newArray = $scope.control.setlist
+		newArray.splice(index,1)
+		srv.set 'setlist', $scope.control.setlist
+		if index == $scope.songIndex and newArray.length != 0
+			if $scope.songIndex > (newArray.length - 1)
+				_setupLive ($scope.songIndex -= 1)
+			else
+				_setupLive $scope.songIndex 
+		else if newArray.length == 0
+			$scope.slide.lyrics = null
+			$scope.next = ""
+			$scope.slide.index = 0
 
 	$scope.loadPreview = (index) ->
 		$scope.songIndex = index;
@@ -172,4 +192,35 @@ ctrl = ['$scope','Server','Songs', ($scope,srv, songs)->
 				if $scope.slide.lyrics[$scope.slide.index + 1]? then $scope.slide.index += 1
 			when "-"
 				if $scope.slide.lyrics[$scope.slide.index - 1]? then $scope.slide.index -= 1
+
+	$scope.editSong = (song) ->
+		$scope.songIsNew = false
+		songs.get song._id, (data) ->
+			$scope.editing = "show"
+			$scope.edit = data
+
+	$scope.cancelEdit = () ->
+		$scope.editing = ""
+		$timeout () ->
+			$scope.edit = null
+			$scope.songIsNew = false
+		, 500, true
+
+	$scope.saveSong = () ->
+		if $scope.songIsNew is true
+			songs.create($scope.edit)
+		else
+			songs.edit($scope.edit)
+		$scope.cancelEdit();
+		$scope.songlist = songs.getAll()
+
+	$scope.newSong = () ->
+		$scope.songIsNew = true
+		$scope.editing = "show"
+		$scope.edit = {}
+
+	$scope.deleteSong = () ->
+		songs.remove($scope.edit)
+		$scope.cancelEdit();
+		$scope.songlist = songs.getAll()
 ]

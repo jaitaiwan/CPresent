@@ -1,3 +1,4 @@
 node_modules
 public/assets/js/compiled
 *.swp
+public/assets/css/ui.css

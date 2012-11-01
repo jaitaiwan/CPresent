@@ -16,6 +16,14 @@ rotate()
 	-webkit-transform 'rotate(%s)' % arguments
 	-o-transform 'rotate(%s)' % arguments
 
+gradientBG(args...)
+	background-image '-moz-linear-gradient(top,%s,%s)' % (args[0] args[1])
+	background-image '-webkit-gradient(linear, 0 0, 0 100%, from(%s), to(%s))'
+	background-image '-webkit-linear-gradient(top,%s,%s)' % (args[0] args [1])
+	background-image '-o-linear-gradient(top,%s,%s)' % (args[0] args[1])
+	background-image 'linear-gradient(to bottom,%s,%s)' % (args[0] args[1])
+
+
 body
 html
 	font-family  "HelveticaNeue-Light", Helvetica, Verdana, Arial, sans-serif
@@ -131,11 +139,11 @@ h2>.switch
 
 .switch.on>div
 	left 1px
-	background-color  turquoise
-	border-bottom 1px solid #32B5A9
+	background-color  #33B5E5
+	border-bottom 1px solid #2EA6D5
 	border-left 1px solid #D6D6D6
 	border-right 1px solid #D6D6D6
-	border-top  1px solid #41EADA
+	border-top  1px solid #37C7FF
 
 
 .switch.off>div
@@ -289,22 +297,24 @@ button.state>div.on
 			position relative
 			top 2px
 
+
+
 .col_left
 	width 40%
 	overflow scroll
 	position relative
-	left 5%
+	left 8%
 	margin-bottom 10%
 
 .songlist
 .setlist
 	position absolute
 	top 0
-	left -30.2%
-	width 30%
+	left -80.2%
+	width 80%
 	height 100%
 	border 1px solid #ccc
-	transition left 0.3s ease
+	transition left 0.3s ease, width 0.3s ease
 	transition-delay 0.5s
 	z-index 100
 	background-color white
@@ -322,16 +332,72 @@ button.state>div.on
 		background-color white
 	>.pad
 		margin 20px
+		>ol
+			>li
+				.remove
+					display none
+			>li:hover
+				.remove
+					display inline-block
 .songlist
+	width 80%
 	>.title
 		right -79px
 		margin-top 180px
-
+	>.editor
+		padding 20px
+		padding-top 3px
+		transition opacity 0.3s ease, visibility 0.3s ease
+		opacity 0
+		visibility hidden
+		width 45%
+		height 80%
+		>textarea
+			width 100%
+			height 100%
+			display block
+		>h2
+			display inline-block
+		>.search
+			width 60%
+			margin-left 20px
+			position relative
+			top -4px
+	>.pad
+		position absolute
+		right 0px
+		width 20em
+		>ul
+			>li
+				.edit
+				.remove
+					display none
+			>li:hover
+				.remove
+				.edit
+					display inline-block
+.songlist.show
+	>.editor
+		opacity 1
+		visibility visible
+.songlist.show
+	left 0
+.songlist.show:hover
+	left 0
+	
 .songlist:hover
 .setlist:hover
 	z-index 200
-	left 0
 	transition-delay 0.2s
+.setlist:hover
+	left 0
+.songlist:hover
+	left -40.6%
+
+.setlist
+	width 30%
+	left -30.2%
+
 
 
 .paragraph
@@ -339,7 +405,8 @@ button.state>div.on
 	width 80%
 	>div>.tag
 		display block
-		background-color turquoise
+		background-color #33B5E5
+		color white
 
 
 .search
@@ -400,8 +467,32 @@ button.state>div.on
 	top 14pt
 	right 0
 
-
 .search>.remove
 	position absolute
 	top 5pt
 	right 5pt
+
+.search>.add
+	position absolute
+	top 1.5pt
+	right 20pt
+	font-size 16pt
+
+.btn.save
+	background-color #33B5E5
+	gradientBG(#37C7FF,#2EA6D5)
+	color white
+
+.edit
+	background-image url('../sprites/edit.png')
+	background-position center center
+	background-repeat no-repeat
+	height 16px
+	width 16px
+
+.remove
+	background-image url('../sprites/delete.png')
+	background-position center center
+	background-repeat no-repeat
+	height 16px
+	width 16px
