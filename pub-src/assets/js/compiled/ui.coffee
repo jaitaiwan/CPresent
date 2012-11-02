@@ -186,6 +186,9 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	$scope.loadPreview = (index) ->
 		$scope.songIndex = index;
 
+	$scope.changeOrder = () ->
+		_setupLive $scope.songIndex
+
 	$scope.changeLyricIndex = (oper) ->
 		switch oper
 			when "+"
