@@ -8,21 +8,16 @@ app = express()
 server = require('http').createServer app
 path = require 'path'
 iq = io.listen server
-cs = require 'connect-coffee-script'
+ca = require 'connect-compiler'
 app.configure 'development', ->
 	app.use express.bodyParser()
-	app.use cs
-		force:true
+	app.use ca
+		enabled: ['coffee','stylus']
 		src: path.normalize './pub-src'
 		dest: path.normalize './public'
-		bare: true
-		compile: (str, options) ->
-			options.bare = true
-			coffeescript.compile str, options
+
 	app.use express.static path.normalize './public'
 	app.use express.directory path.normalize './public'
-##	app.use "/images", express.static "./templates/images"
-##	app.use "/scripts", express.static "./templates/scripts"
 
 config = require './config'
 
@@ -32,7 +27,7 @@ try
 catch err
   console.error err
 
-iq.set('log level',2)
+iq.set('log level',1)
 
 status =
 	bg:config.slideBackgroundColor
@@ -43,47 +38,66 @@ status =
 	clear:false
 	black:false
 
+status2 =
+	background:config.slideBackgroundColor
+	color:config.slideTextColor
+	vAlign:config.slideTextVerticalOrientation
+	hAlign:config.slideTextHorizontalOrientation
+	liveState:false
+	clearState:false
+	blackState:false
+
 control =
 	setlist: []
-	preview: []
 	live: []
 
-iq.sockets.on 'connection', (socket) ->
-	socket.on 'setup:control', (data) ->
-		socket.emit 'initialise:control',
-			control: control
-			status: status
-	socket.on 'go:live', (data) ->
-		socket.broadcast.emit 'go:live', data
-		status = data
-		status.live = true
-		status.clear = false
-		status.black = false
+iq.of('/newui').on 'connection', (socket) ->
+	socket.emit 'update',
+		control: control
+		status: status2
 
-	socket.on 'go:black', (data) ->
-		socket.broadcast.emit 'go:black', data
-		status.black = data.stat
+	socket.on 'set:liveState', (data) ->
+		console.log 'set:liveState', data
+		status2.liveState = data
+		socket.broadcast.emit 'set:liveState', data
+		socket.emit 'update', status: status2
 
-	socket.on 'go:clear', (data) ->
-		socket.broadcast.emit 'go:clear', data
-		status.clear = data.stat
+	socket.on 'set:clearState', (data) ->
+		console.log 'set:clearState', data
+		status2.clearState = data
+		socket.emit 'update', status: status2
 
-	socket.on 'next:slide', (data) ->
+	socket.on 'set:blackState', (data) ->
+		console.log 'set:blackState', data
+		status2.blackState = data
+		socket.emit 'update', status: status2
+
+	socket.on 'set:index', (data) ->
+		console.log 'set:index', data
+		status2.index = data
+		socket.emit 'set:index', data
 		socket.broadcast.emit 'next:slide', data
-		status.text = data.lyric
 
-	socket.on 'toggle:live', (data) ->
-		socket.broadcast.emit 'toggle:live', data
-		status.live = data.stat
-
-	socket.on 'get:status', (data) ->
-		socket.emit 'set:status', status
+	socket.on 'set:live', (data) ->
+		console.log 'set:live', data
+		control = data.control
+		status2 = data.status
+		socket.broadcast.emit 'setup:show',
+			lyrics: data.control.live
+			display: data.status
+		socket.emit 'update',
+			status: status2
+			control: control
+		#socket.broadcast.emit 'next:slide', data.live[data.index]
 
 	socket.on 'set:setlist', (data) ->
 		control.setlist = data
+		socket.emit 'update', control:control
 
-	socket.on 'get:setlist', (data) ->
-		socket.emit 'set:setlist', control.setlist
-
+	socket.on 'please:setup', (data) ->
+		console.log "Setup Requested #{socket.id}"
+		socket.emit 'setup:show',
+			lyrics: control.live
+			display: status2
 
 server.listen config.port

@@ -40,6 +40,11 @@ Presenter.factory 'Songs', ['$resource','$http','$rootScope', (resource, $http,$
 
 Presenter.factory 'Server', ->
 	socket = io.connect()
+	###
+	# We should place the setlist, live, and preview
+	# objects into the server service so we're not maintaining
+	# the state of multiple $scopes
+	###
 	goLive: (lyric, slideBgC, slideTxtC, slideH, slideV) ->
 		socket.emit 'go:live',
 			text: lyric
@@ -65,15 +70,16 @@ PresentationManagerController = ['$scope','Songs','Server', ($scope,Songs,io2) -
 	$scope.slideH = "cen"
 	$scope.prevLyrics = []
 	$scope.isLive = false
-	$scope.live = '#fff'
+	$scope.live = 'off'
 	$scope.tester = ""
 	$scope.callLive = ->
-		$scope.live = $scope.isLive ? '#33B5E5' : '#ffffff'
+		$scope.live = if $scope.isLive then 'on' else 'off'
+		console.log $scope.live
 		io2.toggleLive $scope.isLive
 
 	socket = io.connect()
 	socket.on 'connect', ->
-		socket.on 'set:setlist', (data) ->
+		socket.once 'set:setlist', (data) ->
 			$scope.setlist = data
 			$scope.$watch 'setlist', (n,o) ->
 				socket.emit 'set:setlist', $scope.setlist
@@ -84,6 +90,9 @@ PresentationManagerController = ['$scope','Songs','Server', ($scope,Songs,io2) -
 			$scope.isLive = data.stat
 		socket.on 'go:black', (data) ->
 			$scope.black = data.stat
+		socket.on 'set:setlist', (data) ->
+			$scope.$apply ->
+				$scope.setlist = data
 ]
 
 SongListController = ['$scope','Songs', ($scope,Songs) ->
@@ -174,29 +183,38 @@ SlideController = ['$scope','Server', ($scope, io) ->
 		$scope.$parent.preview2 = $scope.$parent.preview
 		$scope.$parent.prevTxtC = $scope.$parent.slideTxtC
 		$scope.$parent.prevBgC = $scope.$parent.slideBgC
-		$scope.$parent.black = "#000"
+		$scope.$parent.black = "off"
+		$scope.$parent.isBlack = false
 		$scope.prevLyrics.splice 0
 		$scope.prevLyrics.push lyric for lyric in lyrics
 		$scope.$parent.isLive = true
+		io.goClear false
+		io.goBlack false
 		$scope.$parent.callLive()
 		io.goLive $scope.$parent.preview, $scope.$parent.prevBgC, $scope.$parent.prevTxtC, $scope.$parent.slideH, $scope.$parent.slideV
 ]
 
 LiveController = ['$scope','Server', ($scope,io) ->
-	$scope.$parent.black = false
-	$scope.clear = false
+	$scope.$parent.black = "off"
+	$scope.clear = 'off'
+	$scope.isClear = false
 	io._socket.on 'go:clear', (data) ->
-		$scope.clear = data.stat
+		$scope.isClear = data.stat
+		$scope.clear = if $scope.isClear then 'on' else 'off'
+
 	$scope.loadLyric = (lyric) ->
 		$scope.$parent.preview2  = lyric.para
 		io.changeSlide(lyric.para)
 
 	$scope.toggleBlack = ->
-
-		$scope.clear = $scope.$parent.black = !$scope.$parent.black
-		io.goBlack $scope.$parent.black
+		#$scope.isClear = 
+		$scope.$parent.isBlack = !$scope.$parent.isBlack
+		#$scope.clear = if $scope.isClear then 'on' else 'off'
+		$scope.$parent.black = if $scope.$parent.isBlack then 'on' else 'off'
+		io.goBlack $scope.$parent.isBlack
 
 	$scope.toggleClear = ->
-		$scope.clear = !$scope.clear
-		io.goClear $scope.clear
+		$scope.isClear = !$scope.isClear
+		$scope.clear = if $scope.isClear then 'on' else 'off'
+		io.goClear $scope.isClear
 ]

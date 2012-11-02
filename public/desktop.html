@@ -52,8 +52,8 @@
 					<div class="pref">
 						<div class="left" ng-click='alignH("lef")'></div> <div class="center"  ng-click='alignH("cen")'></div> <div class="right"  ng-click='alignH("rig")'></div>
 						<div class="tp" ng-click="alignV('top')"></div> <div class="md" ng-click="alignV('mid')"></div> <div class="bt" ng-click="alignV('bot')"></div>
-						<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:$parent.slideBgC}" data-color="{{slideBgC}}" data-color-format="hex" id="cp"></div>
-						<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:$parent.slideTxtC}" data-color="{{slideTxtC}}" data-color-format="hex" id="cp2"></div>
+						<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:slideBgC}" data-color="{{slideBgC}}" data-color-format="hex" id="cp"></div>
+						<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:slideTxtC}" data-color="{{slideTxtC}}" data-color-format="hex" id="cp2"></div>
 						<!-- input type="text" id="slider" ng-model="slideBgC" ng-show="please" / -->
 					</div>
 	
@@ -74,7 +74,9 @@
 			</div>
 			<div class="col3" ng-controller="LiveController">
 				<div class="pad">
-					<h4>Live <span class="live" ng-click="$parent.isLive = !$parent.isLive; callLive()" ng-style="{backgroundColor:live}">LIVE</span> <span class="black" ng-click="toggleBlack()">BLACK</span> <span class="clear" ng-click="toggleClear()">CLEAR</span>
+					<h4>live <div class="switch" ng-click="$parent.isLive = !$parent.isLive; callLive()" ng-class="$parent.live"><div ng-bind-html="$parent.live.toUpperCase()"></div></div> 
+					 black <div class="switch" ng-click="toggleBlack()" ng-class="$parent.black"><div ng-bind-html="$parent.black.toUpperCase()"></div></div>
+					 clear <div class="switch" ng-click="toggleClear()" ng-class="clear"><div ng-bind-html="clear.toUpperCase()"></div></div>
 					</h4>
 					<span ng-repeat="section in prevLyrics" class="paragraph" ng-click="loadLyric(section);">
 						<div>
