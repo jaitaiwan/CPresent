@@ -25,6 +25,22 @@ Control.directive 'colorpicker', ->
 			if updateModel? then updateModel e.target.value
 		color
 
+Control.directive 'keypress', ->
+	link: (scope, element, attrs) ->
+		options = scope.$eval attrs.keypress
+		$(window.document).on 'keypress', (e) ->
+			if options[e.keyCode]?
+				scope.$apply ->
+					scope.$eval options[e.keyCode]
+
+Control.directive 'keyup', ->
+	link: (scope, element, attrs) ->
+		options = scope.$eval attrs.keyup
+		$(window.document).on 'keyup', (e) ->
+			if options[e.keyCode]?
+				scope.$apply ->
+					scope.$eval options[e.keyCode]
+
 
 Control.factory 'Songs', ['$resource','$http','$rootScope', (resource, $http,$rootScope) ->
 	song = resource '/songs/:id',
@@ -190,6 +206,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		_setupLive $scope.songIndex
 
 	$scope.changeLyricIndex = (oper) ->
+		console.log oper
 		switch oper
 			when "+"
 				if $scope.slide.lyrics[$scope.slide.index + 1]? then $scope.slide.index += 1
@@ -226,4 +243,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		songs.remove($scope.edit)
 		$scope.cancelEdit();
 		$scope.songlist = songs.getAll()
+
+	$scope.keyBoard = ($event) ->
+		console.log $event
 ]

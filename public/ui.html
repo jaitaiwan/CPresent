@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="Control">
 	<head>
 		<title>C.Present - Desktop Control</title>
 		<link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
@@ -9,8 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/ui.css" />
 
 	</head>
-	<body ng-app="Control">
-		<div ng-controller="ctrl">
+	<body ng-controller="ctrl">
+		<div >
 
 			<div class="col_right">
 
@@ -22,7 +22,7 @@
 				<div class="preview">
 					<h2>next &mdash; {{next}} <span class="menu">
 						<ul>
-							<li><span class="left" ng-click="changeLyricIndex('+')">&gt;</span><span class="right" ng-click="changeLyricIndex('-')">&lt;</span></li>
+							<li keyup="{39:'changeLyricIndex(\'+\')',37:'changeLyricIndex(\'-\')'}"><span class="left" ng-click="changeLyricIndex('+')" >&gt;</span><span class="right" ng-click="changeLyricIndex('-')">&lt;</span></li>
 							<li>text color
 								<div class="pref">
 									<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:slide.color}" data-color="{{slide.color}}" data-color-format="hex" id="cp2"></div>
