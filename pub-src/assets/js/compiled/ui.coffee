@@ -83,13 +83,13 @@ Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 
 	## Internal Server Connection ##
 	socket.on 'update', (data) ->
-		$rootScope.$apply ->
-			$rootScope.status = data.status || $rootScope.status
-			$rootScope.control = data.control || $rootScope.control
-			if firstrun
-				$rootScope.slide = data.status
-				$rootScope.songIndex = 0
-				firstrun = false
+		$rootScope.status = data.status || $rootScope.status
+		$rootScope.control = data.control || $rootScope.control
+		if firstrun
+			$rootScope.slide = data.status
+			$rootScope.songIndex = 0
+			firstrun = false
+		$rootScope.$apply()
 
 	## External API ##
 	set: (name, value) ->
