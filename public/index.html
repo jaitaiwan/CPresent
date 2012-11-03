@@ -9,7 +9,6 @@
 
 	</head>
 	<body ng-style="{backgroundColor:status.background,color:status.color}" ng-controller="PresentationManagerController" style="cursor:none;" ng-show="status.liveState">
-		<div class="clock">{{clock}}</div>
 		<div id="slide1" class="fade slide1 slide" ui-show='!currentSlide'>
 			<div ng-class="[status.hAlign,status.vAlign]" class="fade" ui-show='!status.clearState'><div ng-bind-html="slide[0]"></div></div>
 		</div>
