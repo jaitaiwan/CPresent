@@ -67,10 +67,6 @@ Control.service 'Local', ['$rootScope', ($rootScope) ->
 Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 	## Setup basic vars ##
 	socket = io.connect('/newui')
-	status = {}
-	control =
-		setlist: []
-		live: []
 	firstrun = true
 	###
 	# .slideIndex //lyric index int
@@ -83,6 +79,10 @@ Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 
 	## Internal Server Connection ##
 	socket.on 'update', (data) ->
+		status = {}
+		control =
+			setlist: []
+			live: []
 		$rootScope.status = data.status || $rootScope.status
 		$rootScope.control = data.control || $rootScope.control
 		if firstrun
@@ -126,11 +126,10 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		if $scope.control?
 			if !$scope.control.setlist[n]? then return false
 			songs.get $scope.control.setlist[n]._id, (data) ->
-				song = data
-				$scope.next = song.title || ''
-				if !song.lyrics? then return false
-				song.lyrics += "\n\n"
-				lyrics = song.lyrics.match /^([\s\S]*?)(?=\n\n|$\w)/gim
+				$scope.next = data.title || ''
+				if !data.lyrics? then return false
+				data.lyrics += "\n\n"
+				lyrics = data.lyrics.match /^([\s\S]*?)(?=\n\n|$\w)/gim
 				nl = []
 				lastTag = ""
 				for lyric in lyrics
@@ -199,6 +198,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 			$scope.next = ""
 			$scope.slide.index = 0
 
+
 	$scope.loadPreview = (index) ->
 		$scope.songIndex = index;
 
@@ -206,7 +206,6 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		_setupLive $scope.songIndex
 
 	$scope.changeLyricIndex = (oper) ->
-		console.log oper
 		switch oper
 			when "+"
 				if $scope.slide.lyrics[$scope.slide.index + 1]? then $scope.slide.index += 1

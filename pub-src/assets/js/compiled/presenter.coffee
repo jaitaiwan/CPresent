@@ -31,7 +31,8 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 		minute = if now.getMinutes().toString().length == 1 then "0" + now.getMinutes() else now.getMinutes()
 		second = if now.getSeconds().toString().length == 1 then "0" + now.getSeconds() else now.getSeconds()
 		$scope.clock = "#{hour}:#{minute}:#{second}"
-		$timeout doTime, 500
+		setTimeout doTime, 250	
+		if !$scope.$$phase? then $scope.$apply()
 	doTime()
 
 	io.onEvent 'connect', (data) ->
