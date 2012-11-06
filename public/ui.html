@@ -13,9 +13,9 @@
 			<div class="col_right">
 			<div class="live">
 				<h2>live &mdash; {{currenttag}} 
-					<div class="switch" ng-click="toggleLive()" ng-class="live" keypress="{28:'toggleLive()'}"><div ng-bind-html="live.toUpperCase()"></div></div>
-					<div class="switch" ng-click="toggleClear()" ng-class="clear" keypress="{99:'toggleClear()'}"><div ng-bind-html="clear.toUpperCase()"></div></div>
-					<div class="switch" ng-click="toggleBlack()" ng-class="black" keypress="{98:'toggleBlack()'}"><div ng-bind-html="black.toUpperCase()"></div></div>
+					<div class="switch" ng-click="toggleLive()" title="Toggles the presentation live" ui-jq="tooltip" data-placement="bottom" data-delay='{"show":1000,"hide":100}' ng-class="live" keypress="{28:'toggleLive()'}"><div ng-bind-html="live.toUpperCase()"></div></div>
+					<div class="switch" ng-click="toggleClear()" ng-class="clear" keypress="{99:'toggleClear()'}"><div ng-bind-html="clear.toUpperCase()" ui-jq="tooltip" data-placement="bottom" data-delay='{"show":1000,"hide":100}' title="Toggles fading text in and out"></div></div>
+					<div class="switch" ng-click="toggleBlack()" ng-class="black" keypress="{98:'toggleBlack()'}"><div ng-bind-html="black.toUpperCase()" ui-jq="tooltip" data-placement="bottom" data-delay='{"show":1000,"hide":100}' title="Toggles fading presentation to black"></div></div>
 				</h2>
 				<iframe src="timecode.html"></iframe>
 			</div>
@@ -23,7 +23,7 @@
 			<div class="preview" keypress="{12:'makeLive()'}">
 				<h2>next &mdash; {{next}} <span class="menu">
 					<ul>
-						<li keyup="{39:'changeLyricIndex(\'+\')',37:'changeLyricIndex(\'-\')'}"><span class="left" ng-click="changeLyricIndex('+')" >&gt;</span><span class="right" ng-click="changeLyricIndex('-')">&lt;</span></li>
+						<li keyup="{39:'changeLyricIndex(\'+\')',37:'changeLyricIndex(\'-\')'}"><span class="left" ng-click="changeLyricIndex('+')" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to go to next verse">&gt;</span><span class="right" ng-click="changeLyricIndex('-')" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to go to previous verse">&lt;</span></li>
 						<li>text color
 							<div class="pref">
 								<div style="width:16px;height:16px;border:1px solid #ccc;" ng-style="{backgroundColor:slide.color}" data-color="{{slide.color}}" data-color-format="hex" id="cp2"></div>
@@ -52,7 +52,7 @@
 							<div class="pref">not yet built</div>
 						</li>
 					</ul>
-				</span> <span class="goLive" ng-click="makeLive()"></span></h2>
+				</span> <span class="goLive" ng-click="makeLive()" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to make preview live"></span></h2>
 				<div class="slide" ng-style="{backgroundColor:slide.background,color:slide.color}">
 					<div ng-class="[slide.hAlign,slide.vAlign]">
 						<div ng-bind-html="slide.lyrics[slide.ind].para"></div>
@@ -66,8 +66,6 @@
 			<span ng-repeat="section in control.live" class="paragraph" ng-click="nextSlide($index)" keyup="
 				{
 					13:'nextSlide(nextLyric)',
-					38:'nextLyric -= 1',
-					40:'nextLyric += 1',
 					48:'nextSlide(0); alt=false',
 					49:'nextSlide(1); alt=false',
 					50:'nextSlide(2); alt=false',
@@ -88,7 +86,8 @@
 		</div>
 		<div class="setlist">
 			<div class="title">setlist</div>
-			<div class="pad">
+			<div class="pad" keyup="{38:'prevSong(\'+\')',
+					40:'prevSong(\'-\')'}">
 				<ol ui-sortable ui-options="{axis:'y',update:changeOrder}" ng-model="control.setlist">
 					<li ng-repeat="item in control.setlist" ng-click="loadPreview($index)" ui-animate>{{item.title}} <div class="remove" ng-click="removeFromSetList($index)"></div></li>
 				</ol>
@@ -99,13 +98,13 @@
 			<div class="pad">
 				<div class="search" ng-class="[focus,hoverd]" ng-click='tester()'>
 					<input type="text" placeholder="Search songs..." ng-model="search" ng-change="shDelete()" />
-					<div class="remove" ng-style="delDisp" ng-click="search=''; shDelete()"></div>
+					<div class="remove" ng-style="delDisp" ng-click="search=''; shDelete()" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to clear results"></div>
 					<div class="left"></div>
 					<div class="right"></div>
-					<span ng-click="newSong()" class="add"> + </span>
+					<span ng-click="newSong()" class="add" title="Click to create song" ui-jq="tooltip" data-delay="500" data-placement="bottom"> + </span>
 				</div>
 				<ul>
-					<li ng-repeat="song in songlist | filter:search" ng-click="addToSetList(song)">{{song.title}} <div class="edit" ng-click="editSong(song); $event.stopPropagation()"></div></li>
+					<li ng-repeat="song in songlist | filter:search" ng-click="addToSetList(song)">{{song.title}} <div class="edit" ng-click="editSong(song); $event.stopPropagation()" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to edit song"></div></li>
 				</ul>
 			</div>
 			<div class="editor">
@@ -120,12 +119,19 @@
 				<button ng-click="deleteSong()" class="btn btn-danger" ng-show="!songIsNew">Delete</button>
 			</div>
 		</div>
-		
+		<div class="help" ui-show="help" ng-click="help = !help"> ? <span class="content">
+			<h3>Help &amp; Keyboard Shortcuts</h3>
+			Go Live: Ctrl + \<br />
+			Fade to black: b<br />
+			Hide Lyrics: c<br />
+		</span></div>
 		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
 		<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="assets/js/angular.js"></script>
 		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/bootstrap-colorpicker.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap-tooltip.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap-popover.js"></script>
 		<script type="text/javascript" src="assets/js/angular-ui.min.js"></script>
 		<script type="text/javascript" src="assets/js/angular-resource.js"></script>
 		<script type="text/javascript" src="assets/js/angular-sanitize.js"></script>

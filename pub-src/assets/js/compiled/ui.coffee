@@ -210,7 +210,16 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 			$scope.slide.index = 0
 
 
-	$scope.loadPreview = (index) ->
+	$scope.loadPreview = (index,operation) ->
+		if operation?
+			switch operation
+				when "+"
+					index++
+				when "-"
+					index--
+		if index < 0 then index = $scope.control.setlist.length-1
+		else if index > $scope.control.setlist.length then index = 0
+		console.log $scope.control.setlist.length, index
 		$scope.songIndex = index;
 
 	$scope.changeOrder = () ->
@@ -253,4 +262,11 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		songs.remove($scope.edit)
 		$scope.cancelEdit();
 		$scope.songlist = songs.getAll()
+
+	$scope.prevSong = (oper) ->
+		switch oper
+			when "+"
+				if $scope.control.setlist[$scope.songIndex + 1]? then $scope.songIndex += 1
+			when "-"
+				if $scope.control.setlist[$scope.songIndex - 1]? then $scope.songIndex -= 1
 ]

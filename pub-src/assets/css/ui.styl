@@ -368,7 +368,7 @@ button.state>div.on
 	>.pad
 		position absolute
 		right 0px
-		width 20em
+		width 45%
 		>ul
 			>li
 				.edit
@@ -510,3 +510,33 @@ div.highlight
 
 div.nextHighlight
 	border 3px solid #E9F9FF
+
+.help
+	display block
+	border 1px solid #ccc
+	border-radius 15px
+	width 20px
+	height 25px
+	padding-left 0.6em
+	padding-top 0.2em
+	background-color #eee
+	color black
+	font-weight bold
+	position absolute
+	bottom 20px
+	left 20px
+	transition all 0.5s ease
+	box-shadow 0px 0px 7px #ccc
+	z-index 300
+	>.content
+		display block
+		visibility hidden
+		opacity 0
+		transition visibility 0.4s ease, opacity 0.4s ease
+.help.ui-show
+	width 80%
+	height 80%
+	>.content
+		visibility visible
+		opacity 1
+		transition-delay 0.3s
