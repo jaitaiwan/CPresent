@@ -75,31 +75,31 @@ Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 	# .clearState // Clear state bool
 	# .liveState // Live state bool
 	###
-	_varIndex = ['index','lyrics','blackState','clearState','liveState','background','color','vAlign','hAlign','setlist','live']
-
+	_setIndex = ['index','lyrics','blackState','clearState','liveState','background','color','vAlign','hAlign','setlist','live']
+	_getIndex = ['ui']
 	## Internal Server Connection ##
 	socket.on 'update', (data) ->
-		status = {}
-		control =
-			setlist: []
-			live: []
 		$rootScope.status = data.status || $rootScope.status
 		$rootScope.control = data.control || $rootScope.control
 		if firstrun
-			$rootScope.slide = data.status
+			$rootScope.slide = angular.copy(data.status)
 			$rootScope.songIndex = 0
 			firstrun = false
 		$rootScope.$apply()
 
 	## External API ##
 	set: (name, value) ->
-		if name in _varIndex then socket.emit "set:#{name}", value
+		if name in _setIndex then socket.emit "set:#{name}", value
+
+	get: (name) ->
+		if name in _getIndex then socket.emit "get:#{name}", {}
 
 ]
 
 ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	## Initial setup
 	$scope.songlist = songs.getAll()
+	srv.get 'ui'
 	$('#cp').colorpicker({format:'hex'}).on 'changeColor', (ev) ->
 		$scope.$apply ->
 			$scope.slide.background = ev.color.toHex()
@@ -122,6 +122,17 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	$scope.$watch 'songIndex', (n, o) ->
 		_setupLive n
 
+	$scope.$watch 'status.ind', (n, o) ->
+		$scope.highlight = []
+		$scope.highlight[n] = "highlight"
+		if $scope.control?.live[n+1]? 
+			$scope.nextLyric = n+1
+		else if $scope.control?
+			$scope.nextLyric = 0
+
+	$scope.$watch 'nextLyric', (n,o) ->
+		$scope.highlight[n] = "nextHighlight"
+
 	_setupLive = (n) ->
 		if $scope.control?
 			if !$scope.control.setlist[n]? then return false
@@ -142,7 +153,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 						subtag: if matcher[1]? then true else false
 						para:matcher[2].replace /\n/gim, "<br />"
 				$scope.slide.lyrics = nl
-				$scope.slide.index = 0
+				$scope.slide.ind = 0
 	## Setup ui interaction with serv
 	$scope.toggleLive = () ->
 		srv.set 'liveState', !$scope.status.liveState
@@ -174,7 +185,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 			$scope.songIndex = 0
 
 	$scope.nextSlide = (prevSection) ->
-		$scope.currenttag = $scope.slide.lyrics[prevSection].tag
+		$scope.currenttag = $scope.control.live[prevSection].tag
 		srv.set 'index', prevSection
 
 	$scope.addToSetList = (song) ->
@@ -208,9 +219,9 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	$scope.changeLyricIndex = (oper) ->
 		switch oper
 			when "+"
-				if $scope.slide.lyrics[$scope.slide.index + 1]? then $scope.slide.index += 1
+				if $scope.slide.lyrics[$scope.slide.ind + 1]? then $scope.slide.ind += 1
 			when "-"
-				if $scope.slide.lyrics[$scope.slide.index - 1]? then $scope.slide.index -= 1
+				if $scope.slide.lyrics[$scope.slide.ind - 1]? then $scope.slide.ind -= 1
 
 	$scope.editSong = (song) ->
 		$scope.songIsNew = false
@@ -242,7 +253,4 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		songs.remove($scope.edit)
 		$scope.cancelEdit();
 		$scope.songlist = songs.getAll()
-
-	$scope.keyBoard = ($event) ->
-		console.log $event
 ]

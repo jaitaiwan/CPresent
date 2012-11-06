@@ -12,11 +12,15 @@
 	<body ng-controller="ctrl">
 			<div class="col_right">
 			<div class="live">
-				<h2>live &mdash; {{currenttag}} <div class="switch" ng-click="toggleLive()" ng-class="live"><div ng-bind-html="live.toUpperCase()"></div></div></h4>
+				<h2>live &mdash; {{currenttag}} 
+					<div class="switch" ng-click="toggleLive()" ng-class="live" keypress="{28:'toggleLive()'}"><div ng-bind-html="live.toUpperCase()"></div></div>
+					<div class="switch" ng-click="toggleClear()" ng-class="clear" keypress="{99:'toggleClear()'}"><div ng-bind-html="clear.toUpperCase()"></div></div>
+					<div class="switch" ng-click="toggleBlack()" ng-class="black" keypress="{98:'toggleBlack()'}"><div ng-bind-html="black.toUpperCase()"></div></div>
+				</h2>
 				<iframe src="timecode.html"></iframe>
 			</div>
 
-			<div class="preview">
+			<div class="preview" keypress="{12:'makeLive()'}">
 				<h2>next &mdash; {{next}} <span class="menu">
 					<ul>
 						<li keyup="{39:'changeLyricIndex(\'+\')',37:'changeLyricIndex(\'-\')'}"><span class="left" ng-click="changeLyricIndex('+')" >&gt;</span><span class="right" ng-click="changeLyricIndex('-')">&lt;</span></li>
@@ -51,7 +55,7 @@
 				</span> <span class="goLive" ng-click="makeLive()"></span></h2>
 				<div class="slide" ng-style="{backgroundColor:slide.background,color:slide.color}">
 					<div ng-class="[slide.hAlign,slide.vAlign]">
-						<div ng-bind-html="slide.lyrics[slide.index].para"></div>
+						<div ng-bind-html="slide.lyrics[slide.ind].para"></div>
 					</div>
 				</div>
 			</div>
@@ -59,9 +63,25 @@
 		</div>
 		<div class="col_left">
 			<h2>{{song.title}}</h2>
-			<span ng-repeat="section in control.live" class="paragraph" ng-click="nextSlide($index)">
-				<div>
-					<span class="tag" ng-show="section.subtag">{{section.tag}}</span><span ng-bind-html="section.para"></span>
+			<span ng-repeat="section in control.live" class="paragraph" ng-click="nextSlide($index)" keyup="
+				{
+					13:'nextSlide(nextLyric)',
+					38:'nextLyric -= 1',
+					40:'nextLyric += 1',
+					48:'nextSlide(0); alt=false',
+					49:'nextSlide(1); alt=false',
+					50:'nextSlide(2); alt=false',
+					51:'nextSlide(3); alt=false',
+					52:'nextSlide(4); alt=false',
+					53:'nextSlide(5); alt=false',
+					54:'nextSlide(6); alt=false',
+					55:'nextSlide(7); alt=false',
+					56:'nextSlide(8); alt=false',
+					57:'nextSlide(9); alt=false'
+				}
+			">
+				<div ng-class="highlight[$index]">
+					<span class="tag" ng-show="section.subtag">{{section.tag}} <span class='alt' ng-show="alt" keyup="{18:'alt = !alt'}"> {{"{"+$index+"}"}}</span></span><span ng-bind-html="section.para"></span>
 				</div>
 				<br />
 			</span>

@@ -39,7 +39,7 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 		io.onEvent 'setup:show', (data2) ->
 			$scope.status = data2.display
 			$scope.lyrics = data2.lyrics
-			nextSlide data2.display.index
+			nextSlide data2.display.ind
 		io.emitMessage 'please:setup'
 
 	nextSlide = (lyrics) ->
@@ -54,6 +54,12 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 
 	io.onEvent 'set:liveState', (data) ->
 		$scope.status.liveState = data
+
+	io.onEvent 'set:clearState', (data) ->
+		$scope.status.clearState = data
+
+	io.onEvent 'set:blackState', (data) ->
+		$scope.status.blackState = data
 
 	io.onEvent 'go:black', (data) ->
 		$scope.black = data.stat
