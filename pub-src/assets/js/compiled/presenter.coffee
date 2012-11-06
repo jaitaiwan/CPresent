@@ -31,14 +31,15 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 		minute = if now.getMinutes().toString().length == 1 then "0" + now.getMinutes() else now.getMinutes()
 		second = if now.getSeconds().toString().length == 1 then "0" + now.getSeconds() else now.getSeconds()
 		$scope.clock = "#{hour}:#{minute}:#{second}"
-		$timeout doTime, 500
+		setTimeout doTime, 250	
+		if !$scope.$$phase? then $scope.$apply()
 	doTime()
 
 	io.onEvent 'connect', (data) ->
 		io.onEvent 'setup:show', (data2) ->
 			$scope.status = data2.display
 			$scope.lyrics = data2.lyrics
-			nextSlide data2.display.index
+			nextSlide data2.display.ind
 		io.emitMessage 'please:setup'
 
 	nextSlide = (lyrics) ->
@@ -53,6 +54,12 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 
 	io.onEvent 'set:liveState', (data) ->
 		$scope.status.liveState = data
+
+	io.onEvent 'set:clearState', (data) ->
+		$scope.status.clearState = data
+
+	io.onEvent 'set:blackState', (data) ->
+		$scope.status.blackState = data
 
 	io.onEvent 'go:black', (data) ->
 		$scope.black = data.stat

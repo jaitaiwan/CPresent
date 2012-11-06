@@ -25,6 +25,14 @@ body
 	opacity: 1;
 }
 
+.clock
+{
+	position: relative;
+	margin:40px;
+	z-index: 200;
+	color: #ccc
+}
+
 .slide
 {
 	vertical-align : middle; 

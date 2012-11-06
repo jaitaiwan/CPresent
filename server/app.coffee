@@ -29,14 +29,6 @@ catch err
 
 iq.set('log level',1)
 
-status =
-	bg:config.slideBackgroundColor
-	txt:config.slideTextColor
-	v:config.slideTextVerticalOrientation
-	h:config.slideTextHorizontalOrientation
-	live:false
-	clear:false
-	black:false
 
 status2 =
 	background:config.slideBackgroundColor
@@ -46,15 +38,20 @@ status2 =
 	liveState:false
 	clearState:false
 	blackState:false
+	ind: 0
 
 control =
 	setlist: []
 	live: []
 
 iq.of('/newui').on 'connection', (socket) ->
-	socket.emit 'update',
-		control: control
-		status: status2
+
+	socket.on 'get:ui', (data) ->
+		console.log "Setting Up Client #{socket.id}"
+		console.log control, status2
+		socket.emit 'update',
+			control: control
+			status: status2
 
 	socket.on 'set:liveState', (data) ->
 		console.log 'set:liveState', data
@@ -65,17 +62,19 @@ iq.of('/newui').on 'connection', (socket) ->
 	socket.on 'set:clearState', (data) ->
 		console.log 'set:clearState', data
 		status2.clearState = data
+		socket.broadcast.emit 'set:clearState', data
 		socket.emit 'update', status: status2
 
 	socket.on 'set:blackState', (data) ->
 		console.log 'set:blackState', data
 		status2.blackState = data
+		socket.broadcast.emit 'set:blackState', data
 		socket.emit 'update', status: status2
 
 	socket.on 'set:index', (data) ->
 		console.log 'set:index', data
-		status2.index = data
-		socket.emit 'set:index', data
+		status2.ind = data
+		socket.emit 'update', status: status2
 		socket.broadcast.emit 'next:slide', data
 
 	socket.on 'set:live', (data) ->

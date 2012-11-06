@@ -16,13 +16,13 @@
 		<div id="slide2" class="fade slide3 slide" ui-show='currentSlide'>
 			<div ng-class="[status.hAlign,status.vAlign]" class="fade" ui-show='!status.clearState'><div ng-bind-html="slide[1]"></div></div>
 		</div>
-		<div id="blackout" ui-show="black" class="fade"></div>
+		<div id="blackout" ui-show="status.blackState" class="fade"></div>
 		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
 		<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="assets/js/angular.js"></script>
 		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/bootstrap-colorpicker.js"></script>
-		<script type="text/javascript" src="assets/js/angular-ui.js"></script>
+		<script type="text/javascript" src="assets/js/angular-ui.min.js"></script>
 		<script type="text/javascript" src="assets/js/angular-sanitize.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="assets/js/compiled/presenter.js"></script>

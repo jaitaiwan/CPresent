@@ -301,7 +301,9 @@ button.state>div.on
 
 .col_left
 	width 40%
-	overflow scroll
+	height 100%
+	overflow-y scroll
+	overflow-x hidden
 	position relative
 	left 8%
 	margin-bottom 10%
@@ -407,6 +409,12 @@ button.state>div.on
 		display block
 		background-color #33B5E5
 		color white
+		>.alt
+			display inline-block
+			text-align center
+	div
+		border 3px solid white
+		position relative
 
 
 .search
@@ -496,3 +504,9 @@ button.state>div.on
 	background-repeat no-repeat
 	height 16px
 	width 16px
+
+div.highlight
+	background-color #eee
+
+div.nextHighlight
+	border 3px solid #E9F9FF
