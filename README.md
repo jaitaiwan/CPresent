@@ -3,15 +3,16 @@ CPresent
 A simple, web-based church presentation system
 
 **Please note this has only been tested in the latest Chrome for MacOSX**
+Should work in all modern webkit browsers
 
 Current Status:
-alpha
+Release Candidate 2
 
 Installation
 ===========
 1. Install nodejs for your OS
 2. Install mongodb
-3. Create a database called "presentdb"
+3. Create a database called "presentdb" ``` Can be changed in server/config.coffee ```
 4. Download and extract zip file of source
 5. In the command line run 
 ```
@@ -20,49 +21,37 @@ npm install .
 6. Run the following code:
 
 ```javascript
-node ./index.js
+sudo node ./index.js
 ```
+Note sudo is required to run the application on port 80
 
-7. Your done! Navigate to localhost:8080 for the presentation and localhost:8080/desktop.html for the interface.
+7. Your done! Navigate to localhost:80 for the presentation and localhost:80/ui.html for the interface.
 
-How-to
+Keyboard Shortcuts
 ======
-**Add a song**
-Click on the text "Songlist"
+** Live **
+Toggle Fade to Black: ``` b ```
+Toggle Fade text out: ``` c ```
+Toggle Presentation Live: ``` Ctrl + \ ```
+Next Verse ``` Enter ```
+Go to verse n ``` 0/1/2/3/4/5/6/7/8/9 ```
+Show verse number ``` Alt ```
 
-**Edit a song**
-Hover over the song then click the little pencil
+** Preview **
+Show next/previous verse ``` Right/Left ```
+Load next/previous song ``` Down/Up ```
+Send preview to live ``` Ctrl + l ```
 
-**Delete a song**
-Edit the song, then click the "x" next to the song title
+Configuration
+=============
+You can configure defaults of the application by modifying the values in ```config.coffee```
 
-**Add a song to the set list**
-Click on a song in the song list
-
-**Preview a song**
-Click on a song in the set list
-
-**Change presentation background color**
-Click on the first square icon on the Preview toolbar
-
-**Change presentation text color**
-Click on the second square icon on the Preview toolbar
-
-**Make a song live**
-Click the play button next to the "Preview" header
-
-**Show only the background**
-Click "Clear"
-
-**Black out the screen**
-Click "Black"
-
-**Stop the presentation**
-Click "Live"
+```port``` Specify which port you'd like to run the server on
+```db``` Specify which db you'd like to use for songs
 
 Setting up a presentation
 ========================
-1. Open the http://localhost:8080/index.html file in your web browser
+1. Open the http://localhost:80/index.html file in your web browser
 2. Move it to the screen your projector uses
 3. Full screen the web page
-4. In another window open http://localhost:8080/desktop.html
+4. In another window open http://localhost:80/ui.html

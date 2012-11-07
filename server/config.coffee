@@ -3,9 +3,9 @@ module.exports =
 	db: "presentdb"
 
 	##Slide defaults
-	slideBackgroundColor: "#000000"
-	slideTextColor: "#FFFFFF"
-	slideTextVerticalOrientation: "mid"
-	slideTextHorizontalOrientation: "cen"
+	slideBackgroundColor: "#000000" ## Presentation's default background color
+	slideTextColor: "#FFFFFF" ## Presentation's Text Color
+	slideTextVerticalOrientation: "mid" ## Vertical Orientation of text. Possible values: top,mid,bot
+	slideTextHorizontalOrientation: "cen" ## Horizontal Orientation of text. Possible values: lef,mid,rig
 
-	liveOffImage: ""
+	liveOffImage: "" ## future value. Not yet implemented
