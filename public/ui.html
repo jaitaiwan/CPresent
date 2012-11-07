@@ -119,11 +119,28 @@
 				<button ng-click="deleteSong()" class="btn btn-danger" ng-show="!songIsNew">Delete</button>
 			</div>
 		</div>
-		<div class="help" ui-show="help" ng-click="help = !help"> ? <span class="content">
+		<div class="help" ui-show="help" ng-click="help = !help"><span ui-jq="tooltip" title="Quick Help"> ? </span><span class="content">
 			<h3>Help &amp; Keyboard Shortcuts</h3>
-			Go Live: Ctrl + \<br />
-			Fade to black: b<br />
-			Hide Lyrics: c<br />
+			<div style="float:right; margin-right:30px">
+				Make live: <pre>Ctrl + l</pre>
+			</div>
+			Toggle Live: <pre>Ctrl + \</pre><br />
+			Fade to black: <pre>b</pre><br />
+			Hide Lyrics: <pre>c</pre><br />
+			Change song in preview: <pre>Up/Down</pre><br />
+			Change Verse in preview: <pre>Left/Right</pre><br />
+			Next Verse (Live): <pre>Enter</pre><br />
+			<hr />
+			<h4>Set-up a presentation</h4>
+			Open the song list, search for a song you'd like to add, then click on it to add it to the setlist. You'll notice a preview of the song shows in the preview area.
+			<h4>Present a song</h4>
+			Click the go-live button <img src="/assets/sprites/golive.png">. You'll notice the lyrics appear and a view of what your presenting appears. Click on any lyric to make it live or alternatively press <pre>Enter</pre> to go to the next lyric.
+			<h4>Song editing</h4>
+			In the songlist, hover over any song and click the edit button <img src="/assets/sprites/edit.png"> to edit a song. From there you can edit the song&quot;s or delete them. If you'd like to make a new song, click the <pre>+</pre> located inside the search bar.
+			<h4>Modifying the setlist</h4>
+			Once you've added songs from the song list, you can then edit the song position or remove it from the setlist. To remove, simply hover over the song and click the delete button <img src="/assets/sprites/delete.png">. To re-arrange the set list just click and drag the songs to where you want them. Remember the preview will autmatically load the next song in the set list when you click go live <img src="/assets/sprites/golive.png">.
+			<h4>Viewing a presentation</h4>
+			Open a new window in your web-browser and place it on the monitor/projector you will present on. Open the servers index.html page and full screen it. Alternatively <a target="window" href="/index.html">Click here</a>.
 		</span></div>
 		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
 		<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>

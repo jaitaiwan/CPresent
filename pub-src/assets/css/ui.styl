@@ -109,6 +109,7 @@ h2>.switch
 	background-color #d1d1d1
 	position relative
 	font-size  9pt
+	cursor pointer
 
 .s_on
 	position absolute
@@ -371,6 +372,7 @@ button.state>div.on
 		width 45%
 		>ul
 			>li
+				cursor default
 				.edit
 				.remove
 					display none
@@ -405,6 +407,7 @@ button.state>div.on
 .paragraph
 	display block
 	width 80%
+	cursor default
 	>div>.tag
 		display block
 		background-color #33B5E5
@@ -528,15 +531,40 @@ div.nextHighlight
 	transition all 0.5s ease
 	box-shadow 0px 0px 7px #ccc
 	z-index 300
+	cursor default
+	opacity 0.5
 	>.content
 		display block
 		visibility hidden
 		opacity 0
+		font-weight 100
 		transition visibility 0.4s ease, opacity 0.4s ease
+		h3
+			background-color #eee
+			margin-left -0.4em
+			padding-left 0.4em
+			border-bottom 1px solid #aaa
+			margin-top -23px
+			border-top-left-radius 15px
+			border-top-right-radius 15px
+			position relative
+			z-index 400
+		pre
+			display inline
+			padding 1px
+		hr
+			margin-right 10px
 .help.ui-show
-	width 80%
-	height 80%
+	width 58em
+	height 40em
+	background-color white
+	opacity 0.9
 	>.content
 		visibility visible
 		opacity 1
 		transition-delay 0.3s
+.help.ui-show:hover
+	opacity 0.9
+
+.help:hover
+	opacity 1
