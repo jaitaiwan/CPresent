@@ -29,17 +29,28 @@ Note sudo is required to run the application on port 80
 
 Keyboard Shortcuts
 ======
-** Live **
+
+**Live**
+
 Toggle Fade to Black: ``` b ```
+
 Toggle Fade text out: ``` c ```
+
 Toggle Presentation Live: ``` Ctrl + \ ```
+
 Next Verse ``` Enter ```
+
 Go to verse n ``` 0/1/2/3/4/5/6/7/8/9 ```
+
 Show verse number ``` Alt ```
 
-** Preview **
+
+**Preview**
+
 Show next/previous verse ``` Right/Left ```
+
 Load next/previous song ``` Down/Up ```
+
 Send preview to live ``` Ctrl + l ```
 
 Configuration
@@ -47,6 +58,7 @@ Configuration
 You can configure defaults of the application by modifying the values in ```config.coffee```
 
 ```port``` Specify which port you'd like to run the server on
+
 ```db``` Specify which db you'd like to use for songs
 
 Setting up a presentation
