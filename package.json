@@ -1,4 +1,5 @@
 {
+  "name":"CPresent",
   "version": "1.0.0rc2",
   "description": "Simplified, web-based church presentation system.",
   "main": "index.js",
@@ -6,7 +7,8 @@
     "express": "latest",
     "mongojs": "latest",
     "socket.io": "latest",
-    "connect-assets":"latest"
+    "connect-compiler":"latest",
+    "stylus":latest"
   },
   "devDependencies": {
     "coffee-script": "latest"
