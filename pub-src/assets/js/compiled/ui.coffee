@@ -79,13 +79,15 @@ Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 	_getIndex = ['ui']
 	## Internal Server Connection ##
 	socket.on 'update', (data) ->
-		$rootScope.status = data.status || $rootScope.status
-		$rootScope.control = data.control || $rootScope.control
-		if firstrun
-			$rootScope.slide = angular.copy(data.status)
-			$rootScope.songIndex = 0
-			firstrun = false
-		$rootScope.$apply()
+	##	$rootScope.$apply ->
+			$rootScope.status = data.status || $rootScope.status
+			$rootScope.control = data.control || $rootScope.control
+			if firstrun
+				$rootScope.slide = angular.copy(data.status)
+				$rootScope.songIndex = 0
+				firstrun = false
+			$rootScope.$digest()
+		
 
 	## External API ##
 	set: (name, value) ->
@@ -122,17 +124,18 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	$scope.$watch 'songIndex', (n, o) ->
 		_setupLive n
 
-	$scope.$watch 'status.ind', (n, o) ->
+	$scope.$watch 'status.ind', (n, o) -> 
 		$scope.highlight = []
 		$scope.highlight[n] = "highlight"
-		if $scope.control?.live[n+1]? 
-			$scope.nextLyric = n + 1
-		else if $scope.control?
+		if (n+1) >= $scope.control?.live?.length
 			$scope.nextLyric = 0
-		
+		else
+			$scope.nextLyric = n + 1
+	, false
 
 	$scope.$watch 'nextLyric', (n,o) ->
 		$scope.highlight[n] = "nextHighlight"
+
 
 	_setupLive = (n) ->
 		if $scope.control?
@@ -154,7 +157,6 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 						subtag: if matcher[1]? then true else false
 						para:matcher[2].replace /\n/gim, "<br />"
 				$scope.slide.lyrics = nl
-				$scope.status.ind = 0
 	## Setup ui interaction with serv
 	$scope.toggleLive = () ->
 		srv.set 'liveState', !$scope.status.liveState
@@ -175,6 +177,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		$scope.currenttag = $scope.control.live[0].tag
 		$scope.$parent.status = angular.copy($scope.slide)
 		$scope.$parent.status.liveState = true
+		$scope.status.ind = -1
 
 		srv.set 'live',
 			status: $scope.status
@@ -220,7 +223,6 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 					index--
 		if index < 0 then index = $scope.control.setlist.length-1
 		else if index > $scope.control.setlist.length then index = 0
-		console.log $scope.control.setlist.length, index
 		$scope.songIndex = index;
 
 	$scope.changeOrder = () ->

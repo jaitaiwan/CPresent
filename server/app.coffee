@@ -27,10 +27,10 @@ try
 catch err
   console.error err
 
-iq.set('log level',1)
+iq.set('log level',2)
 
 
-status2 =
+status =
 	background:config.slideBackgroundColor
 	color:config.slideTextColor
 	vAlign:config.slideTextVerticalOrientation
@@ -48,44 +48,45 @@ iq.of('/newui').on 'connection', (socket) ->
 
 	socket.on 'get:ui', (data) ->
 		console.log "Setting Up Client #{socket.id}"
-		console.log control, status2
+		console.log control, status
 		socket.emit 'update',
 			control: control
-			status: status2
+			status: status
 
 	socket.on 'set:liveState', (data) ->
 		console.log 'set:liveState', data
-		status2.liveState = data
+		status.liveState = data
 		socket.broadcast.emit 'set:liveState', data
-		socket.emit 'update', status: status2
+		socket.emit 'update', status: status
 
 	socket.on 'set:clearState', (data) ->
 		console.log 'set:clearState', data
-		status2.clearState = data
+		status.clearState = data
 		socket.broadcast.emit 'set:clearState', data
-		socket.emit 'update', status: status2
+		socket.emit 'update', status: status
 
 	socket.on 'set:blackState', (data) ->
 		console.log 'set:blackState', data
-		status2.blackState = data
+		status.blackState = data
 		socket.broadcast.emit 'set:blackState', data
-		socket.emit 'update', status: status2
+		socket.emit 'update', status: status
 
 	socket.on 'set:index', (data) ->
 		console.log 'set:index', data
-		status2.ind = data
-		socket.emit 'update', status: status2
+		status.ind = data
+		socket.emit 'update', status: status
 		socket.broadcast.emit 'next:slide', data
 
 	socket.on 'set:live', (data) ->
 		console.log 'set:live', data
 		control = data.control
-		status2 = data.status
+		status = data.status
+		if data.status.ind is -1 then data.status.ind = 0 ## fixes $watch not firing... hack
 		socket.broadcast.emit 'setup:show',
 			lyrics: data.control.live
 			display: data.status
 		socket.emit 'update',
-			status: status2
+			status: status
 			control: control
 		#socket.broadcast.emit 'next:slide', data.live[data.index]
 
@@ -97,6 +98,6 @@ iq.of('/newui').on 'connection', (socket) ->
 		console.log "Setup Requested #{socket.id}"
 		socket.emit 'setup:show',
 			lyrics: control.live
-			display: status2
+			display: status
 
 server.listen config.port
