@@ -29,17 +29,19 @@ Control.directive 'keypress', ->
 	link: (scope, element, attrs) ->
 		options = scope.$eval attrs.keypress
 		$(window.document).on 'keypress', (e) ->
-			if options[e.keyCode]?
-				scope.$apply ->
-					scope.$eval options[e.keyCode]
+			if not scope.editing
+				if options[e.keyCode]?
+					scope.$apply ->
+						scope.$eval options[e.keyCode]
 
 Control.directive 'keyup', ->
 	link: (scope, element, attrs) ->
 		options = scope.$eval attrs.keyup
 		$(window.document).on 'keyup', (e) ->
-			if options[e.keyCode]?
-				scope.$apply ->
-					scope.$eval options[e.keyCode]
+			if not scope.editing
+				if options[e.keyCode]?
+					scope.$apply ->
+						scope.$eval options[e.keyCode]
 
 
 Control.factory 'Songs', ['$resource','$http','$rootScope', (resource, $http,$rootScope) ->
