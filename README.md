@@ -6,7 +6,7 @@ A simple, web-based church presentation system
 Should work in all modern webkit browsers
 
 Current Status:
-Release Candidate 2
+Release Candidate 4 (Pretty much stable on latest Chrome for mac running server at localhost)
 
 Installation
 ===========
