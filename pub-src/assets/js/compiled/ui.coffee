@@ -126,9 +126,10 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		$scope.highlight = []
 		$scope.highlight[n] = "highlight"
 		if $scope.control?.live[n+1]? 
-			$scope.nextLyric = n+1
+			$scope.nextLyric = n + 1
 		else if $scope.control?
 			$scope.nextLyric = 0
+		
 
 	$scope.$watch 'nextLyric', (n,o) ->
 		$scope.highlight[n] = "nextHighlight"
@@ -153,7 +154,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 						subtag: if matcher[1]? then true else false
 						para:matcher[2].replace /\n/gim, "<br />"
 				$scope.slide.lyrics = nl
-				$scope.slide.ind = 0
+				$scope.status.ind = 0
 	## Setup ui interaction with serv
 	$scope.toggleLive = () ->
 		srv.set 'liveState', !$scope.status.liveState
@@ -172,7 +173,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	$scope.makeLive = () ->
 		$scope.$parent.control.live = $scope.slide.lyrics
 		$scope.currenttag = $scope.control.live[0].tag
-		$scope.$parent.status = $scope.slide
+		$scope.$parent.status = angular.copy($scope.slide)
 		$scope.$parent.status.liveState = true
 
 		srv.set 'live',
@@ -207,7 +208,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		else if newArray.length == 0
 			$scope.slide.lyrics = null
 			$scope.next = ""
-			$scope.slide.index = 0
+			$scope.slide.ind = 0
 
 
 	$scope.loadPreview = (index,operation) ->

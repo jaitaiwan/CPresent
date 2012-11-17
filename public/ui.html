@@ -20,7 +20,7 @@
 				<iframe src="timecode.html"></iframe>
 			</div>
 
-			<div class="preview" keypress="{12:'makeLive()'}">
+			<div class="preview" keyup="{76:'makeLive()'}">
 				<h2>next &mdash; {{next}} <span class="menu">
 					<ul>
 						<li keyup="{39:'changeLyricIndex(\'+\')',37:'changeLyricIndex(\'-\')'}"><span class="left" ng-click="changeLyricIndex('+')" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to go to next verse">&gt;</span><span class="right" ng-click="changeLyricIndex('-')" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to go to previous verse">&lt;</span></li>
@@ -61,21 +61,20 @@
 			</div>
 
 		</div>
-		<div class="col_left">
+		<div class="col_left" keyup="{13:'nextSlide(nextLyric)'}">
 			<h2>{{song.title}}</h2>
 			<span ng-repeat="section in control.live" class="paragraph" ng-click="nextSlide($index)" keyup="
 				{
-					13:'nextSlide(nextLyric)',
-					48:'nextSlide(0); alt=false',
-					49:'nextSlide(1); alt=false',
-					50:'nextSlide(2); alt=false',
-					51:'nextSlide(3); alt=false',
-					52:'nextSlide(4); alt=false',
-					53:'nextSlide(5); alt=false',
-					54:'nextSlide(6); alt=false',
-					55:'nextSlide(7); alt=false',
-					56:'nextSlide(8); alt=false',
-					57:'nextSlide(9); alt=false'
+					48:'nextSlide(0); alt=false;',
+					49:'nextSlide(1); alt=false;',
+					50:'nextSlide(2); alt=false;',
+					51:'nextSlide(3); alt=false;',
+					52:'nextSlide(4); alt=false;',
+					53:'nextSlide(5); alt=false;',
+					54:'nextSlide(6); alt=false;',
+					55:'nextSlide(7); alt=false;',
+					56:'nextSlide(8); alt=false;',
+					57:'nextSlide(9); alt=false;'
 				}
 			">
 				<div ng-class="highlight[$index]">
