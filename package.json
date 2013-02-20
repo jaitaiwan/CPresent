@@ -1,11 +1,12 @@
 {
   "name":"CPresent",
-  "version": "1.0.0rc4",
+  "version": "1.0.0rc5",
   "description": "Simplified, web-based church presentation system.",
   "main": "index.js",
   "dependencies": {
     "express": "latest",
     "mongojs": "latest",
+    "mongodb":"latest",
     "socket.io": "latest",
     "connect-compiler":"latest",
     "stylus":"latest"
