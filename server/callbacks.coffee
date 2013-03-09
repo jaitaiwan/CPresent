@@ -1,27 +1,9 @@
 mongo = require 'mongojs'
 config = require './config'
 db = mongo.connect(config.db,['songs','setlists']);
-ObjectID = mongo.ObjectId
+### MongoJS no longer provides the ObjectID function ###
+ObjectID = require('mongodb').ObjectID
 
-###db.songs.update { _id : ObjectID("505c335f132333813a2c86ad")}, {$set:
-	lyrics:"""
-Verse 1
-He became sin, who knew no sin
-So we might become his righteousness
-
-He Humbled himself and carried the cross
-Love so amazing
-Love so amazing
-
-Chorus
-Jesus Messiah
-Name above all names
-Blessed redeemer
-Emmanuel
-"""
-}, (err, data) ->
-	console.log err,data
-###
 module.exports = 
 	getSongs: (req, res, next) ->
 		## Get list of songs
@@ -30,8 +12,8 @@ module.exports =
 
 	getSong: (req, res, next) ->
 		## Get a single song
-		db.songs.findOne {_id:ObjectID(req.params.id)}, (err, data) ->
-			res.json(data);
+		db.songs.findOne {_id:ObjectID(req.params.id)}, (err, data) =>
+			res.json data
 
 	modifySong: (req, res, next) ->
 		## Modify a song
