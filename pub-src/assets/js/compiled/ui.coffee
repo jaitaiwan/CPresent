@@ -77,7 +77,7 @@ Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 	# .clearState // Clear state bool
 	# .liveState // Live state bool
 	###
-	_setIndex = ['index','lyrics','blackState','clearState','liveState','background','color','vAlign','hAlign','setlist','live']
+	_setIndex = ['index','lyrics','blackState','clearState','liveState','background','color','vAlign','hAlign','setlist','live','nextItem','annoucement']
 	_getIndex = ['ui']
 	## Internal Server Connection ##
 	socket.on 'update', (data) ->
@@ -142,6 +142,7 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 	_setupLive = (n) ->
 		if $scope.control?
 			if !$scope.control.setlist[n]? then return false
+			srv.set 'nextItem', $scope.control.setlist[n].title
 			songs.get $scope.control.setlist[n]._id, (data) ->
 				$scope.next = data.title || ''
 				if !data.lyrics? then return false
@@ -274,4 +275,8 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 				if $scope.control.setlist[$scope.songIndex + 1]? then $scope.songIndex += 1
 			when "-"
 				if $scope.control.setlist[$scope.songIndex - 1]? then $scope.songIndex -= 1
+
+	$scope.annoucement = ->
+		console.log "Annoucing", $scope.search
+		srv.set 'annoucement', $scope.search
 ]

@@ -102,6 +102,7 @@
 					<div class="right"></div>
 					<span ng-click="newSong()" class="add" title="Click to create song" ui-jq="tooltip" data-delay="500" data-placement="bottom"> + </span>
 				</div>
+				<span ng-click="annoucement()" class="announce"></span>
 				<ul>
 					<li ng-repeat="song in songlist | filter:search" ng-click="addToSetList(song)">{{song.title}} <div class="edit" ng-click="editSong(song); $event.stopPropagation()" ui-jq="tooltip" data-delay="500" data-placement="bottom" title="Click to edit song"></div></li>
 				</ul>

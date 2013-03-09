@@ -53,11 +53,19 @@ iq.of('/newui').on 'connection', (socket) ->
 			control: control
 			status: status
 
+	socket.on 'set:annoucement', (data) ->
+		console.log "Saying annoucement"
+		socket.broadcast.emit 'say:annoucement', data
+
 	socket.on 'set:liveState', (data) ->
 		console.log 'set:liveState', data
 		status.liveState = data
 		socket.broadcast.emit 'set:liveState', data
 		socket.emit 'update', status: status
+
+	socket.on 'set:nextItem', (data) ->
+		console.log 'set:nextItem', data
+		socket.broadcast.emit 'set:nextItem', data
 
 	socket.on 'set:clearState', (data) ->
 		console.log 'set:clearState', data

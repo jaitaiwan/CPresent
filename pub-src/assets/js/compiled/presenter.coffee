@@ -52,6 +52,14 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 				$scope.slide[0] = $scope.lyrics[lyrics].para;
 				$scope.currentSlide = 0;
 
+	sayAnnoucement = (announce) ->
+		console.log "Saying annoucement", announce
+		$scope.announcement = announce
+		$scope.announce = true
+		$timeout ->
+			$scope.announce = false
+		, 6000
+
 	io.onEvent 'set:liveState', (data) ->
 		$scope.status.liveState = data
 
@@ -69,6 +77,9 @@ PresentationManagerController = ['$scope','socket','$timeout', ($scope,io,$timeo
 
 	io.onEvent 'next:slide', (data) ->
 		nextSlide data
+
+	io.onEvent 'say:annoucement', (data) ->
+		sayAnnoucement data
 ]
 
 resizeMe = ->

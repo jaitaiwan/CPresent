@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="SignalControl">
+	<head>
+		<title>C.Present - Signal Control</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/signal.css" />
+	</head>
+	<body ng-controller="SignalControlMain">
+		<div class="container">
+			<div class="fluid-row">
+				<div class="song">Next: {{item}}</div>
+			</div>
+			<div class="row">
+				<div ng-repeat="item in tags" class="span1 tag" style="color:{{item.color}}"><span>{{item.name}}</span></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+		<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="assets/js/angular.min.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/angular-ui.min.js"></script>
+		<script type="text/javascript" src="assets/js/angular-sanitize.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="assets/js/compiled/signalcontrol.js"></script>
+	</body>
+</html>
