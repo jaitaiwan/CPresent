@@ -24,4 +24,8 @@ module.exports = [
 	matches:"/songs/:id"
 	method:"delete"
 	callback: callbacks.deleteSong
+,
+	matches:"/server/restart"
+	method:"get",
+	callback: callbacks.restartServer
 ]

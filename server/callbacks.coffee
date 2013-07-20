@@ -37,3 +37,6 @@ module.exports =
 
 	deleteSong: (req, res, next) ->
 		db.songs.remove({_id:ObjectID(req.params.id)});
+
+	restartServer: (req, res, next) ->
+		process.exit()

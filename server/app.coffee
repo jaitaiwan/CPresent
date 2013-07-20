@@ -6,6 +6,7 @@ express = require 'express'
 io = require 'socket.io'
 app = express()
 server = require('http').createServer app
+stream = require 'stream'
 path = require 'path'
 iq = io.listen server
 ca = require 'connect-compiler'
@@ -20,6 +21,21 @@ app.configure 'development', ->
 	app.use express.directory path.normalize './public'
 
 config = require './config'
+
+logger = new stream.Stream()
+logger.writable = true
+
+console.log=(->
+	orig = console.log
+	return ->
+		logger.write? arguments
+		try
+			tmp = process.stdout;
+			process.stdout = process.stderr
+			orig.apply console, arguments
+		finally
+			process.stdout=tmp;
+)() 
 
 try
   routes = require './router'
@@ -43,6 +59,11 @@ status =
 control =
 	setlist: []
 	live: []
+
+
+iq.of('/dashboard').on 'connection', (socket) ->
+	logger.write = (data) ->
+		socket.emit 'log', data
 
 iq.of('/newui').on 'connection', (socket) ->
 
