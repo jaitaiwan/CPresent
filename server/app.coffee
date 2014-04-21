@@ -9,16 +9,18 @@ server = require('http').createServer app
 stream = require 'stream'
 path = require 'path'
 iq = io.listen server
+body_parser = require 'body-parser'
+tatic = require 'serve-static'
+directory = require 'serve-index'
 ca = require 'connect-compiler'
-app.configure 'development', ->
-	app.use express.bodyParser()
-	app.use ca
-		enabled: ['coffee','stylus']
-		src: path.normalize './pub-src'
-		dest: path.normalize './public'
+app.use body_parser()
+app.use ca
+	enabled: ['coffee','stylus']
+	src: path.normalize './pub-src'
+	dest: path.normalize './public'
 
-	app.use express.static path.normalize './public'
-	app.use express.directory path.normalize './public'
+app.use tatic path.normalize './public'
+app.use directory path.normalize './public'
 
 config = require './config'
 
