@@ -33,7 +33,7 @@ module.exports =
 			title: req.body.title
 			lyrics: req.body.lyrics
 		}
-		res.send(200);
+		res.send(200).end();
 
 	deleteSong: (req, res, next) ->
 		db.songs.remove({_id:ObjectID(req.params.id)});

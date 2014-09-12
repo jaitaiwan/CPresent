@@ -11,16 +11,21 @@ path = require 'path'
 iq = io.listen server
 body_parser = require 'body-parser'
 tatic = require 'serve-static'
-directory = require 'serve-index'
+# Appears to not be working and causing 405 error on put urls
+#directory = require 'serve-index'
 ca = require 'connect-compiler'
-app.use body_parser()
+cors = require 'cors'
+router = express.Router()
+app.use body_parser.urlencoded({extended:true})
+app.use body_parser.json()
+# app.use cors()
 app.use ca
 	enabled: ['coffee','stylus']
 	src: path.normalize './pub-src'
 	dest: path.normalize './public'
 
 app.use tatic path.normalize './public'
-app.use directory path.normalize './public'
+#app.use directory path.normalize './public'
 
 config = require './config'
 
@@ -41,13 +46,11 @@ console.log=(->
 
 try
   routes = require './router'
-  app[route.method] route.matches,route.callback for route in routes
+  router[route.method] route.matches,route.callback for route in routes
 catch err
   console.error err
 
-iq.set('log level',2)
-
-
+app.use '/', router
 status =
 	background:config.slideBackgroundColor
 	color:config.slideTextColor
