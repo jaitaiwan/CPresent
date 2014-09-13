@@ -14,7 +14,7 @@ tatic = require 'serve-static'
 # Appears to not be working and causing 405 error on put urls
 #directory = require 'serve-index'
 ca = require 'connect-compiler'
-cors = require 'cors'
+#cors = require 'cors'
 router = express.Router()
 app.use body_parser.urlencoded({extended:true})
 app.use body_parser.json()

@@ -1,6 +1,6 @@
 {
   "name": "CPresent",
-  "version": "1.0.0rc5",
+  "version": "1.0.0rc6",
   "description": "Simplified, web-based church presentation system.",
   "main": "index.js",
   "dependencies": {

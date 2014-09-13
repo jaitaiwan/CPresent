@@ -2,6 +2,10 @@ mongo = require 'mongojs'
 config = require './config'
 db = mongo.connect(config.db,['songs','setlists']);
 ### MongoJS no longer provides the ObjectID function ###
+db.getLastError ->
+	console.log arguments
+db.getLastErrorObj ->
+	console.log arguments
 ObjectID = require('mongodb').ObjectID
 
 module.exports = 
@@ -29,11 +33,11 @@ module.exports =
 
 	createSong: (req, res, next) ->
 		## createSong
-		db.songs.save {
+		result = db.songs.save {
 			title: req.body.title
 			lyrics: req.body.lyrics
 		}
-		res.send(200).end();
+		res.status(200).send(result).end();
 
 	deleteSong: (req, res, next) ->
 		db.songs.remove({_id:ObjectID(req.params.id)});
