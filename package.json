@@ -8,7 +8,7 @@
     "mongojs": "latest",
     "mongodb": "latest",
     "socket.io": "latest",
-    "connect-compiler": "latest",
+    "connect-compiler2": "latest",
     "stylus": "latest",
     "body-parser": "latest",
     "serve-index": "^1.0.1",

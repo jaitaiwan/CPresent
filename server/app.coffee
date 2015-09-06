@@ -8,12 +8,12 @@ app = express()
 server = require('http').createServer app
 stream = require 'stream'
 path = require 'path'
-iq = io.listen server
+iq = io(server)
 body_parser = require 'body-parser'
 tatic = require 'serve-static'
 # Appears to not be working and causing 405 error on put urls
 #directory = require 'serve-index'
-ca = require 'connect-compiler'
+ca = require 'connect-compiler2'
 #cors = require 'cors'
 router = express.Router()
 app.use body_parser.urlencoded({extended:true})
@@ -44,11 +44,12 @@ console.log=(->
 			process.stdout=tmp;
 )() 
 
-try
-  routes = require './router'
-  router[route.method] route.matches,route.callback for route in routes
-catch err
-  console.error err
+# try
+routes = require './router'
+console.log routes
+router[route.method] route.matches,route.callback for route in routes
+# catch err
+#   console.error err
 
 app.use '/', router
 status =
@@ -134,4 +135,4 @@ iq.of('/newui').on 'connection', (socket) ->
 			lyrics: control.live
 			display: status
 
-server.listen config.port
+server.listen config.port, config.host

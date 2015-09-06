@@ -1,11 +1,11 @@
 mongo = require 'mongojs'
 config = require './config'
-db = mongo.connect(config.db,['songs','setlists']);
+db = mongo(config.dsn,['songs','setlists']);
 ### MongoJS no longer provides the ObjectID function ###
-db.getLastError ->
-	console.log arguments
-db.getLastErrorObj ->
-	console.log arguments
+# db.getLastError ->
+# 	console.log arguments
+# db.getLastErrorObj ->
+# 	console.log arguments
 ObjectID = require('mongodb').ObjectID
 
 module.exports = 

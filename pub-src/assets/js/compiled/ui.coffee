@@ -68,7 +68,8 @@ Control.service 'Local', ['$rootScope', ($rootScope) ->
 
 Control.factory 'Server', ['$cookieStore','$rootScope', ($cookie, $rootScope) ->
 	## Setup basic vars ##
-	socket = io.connect('/newui')
+	console.log window.location.origin + '/newui'
+	socket = io.connect window.location.origin + '/newui'
 	firstrun = true
 	###
 	# .slideIndex //lyric index int

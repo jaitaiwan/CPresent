@@ -1,7 +1,7 @@
 Presenter = angular.module 'Presenter', ['ui.directives','ngSanitize']
 
 Presenter.factory 'socket', ['$rootScope', ($rootScope) ->
-	socket = io.connect('/newui')
+	socket = io.connect(window.location.origin + '/newui')
 	socket.emitMessage = ->
 		args = Array.prototype.slice.call arguments
 		if args.length <= 0 then return

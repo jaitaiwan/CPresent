@@ -1,7 +1,7 @@
 Debugger = angular.module 'Debugger', ['ui.directives','ngSanitize']
 
 Debugger.factory 'socket', ['$rootScope', ($rootScope) ->
-	socket = io.connect('/dashboard')
+	socket = io.connect(window.location.origin + '/dashboard')
 	socket.emitMessage = ->
 		args = Array.prototype.slice.call arguments
 		if args.length <= 0 then return
