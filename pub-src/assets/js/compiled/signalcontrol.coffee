@@ -1,7 +1,7 @@
 SignalControl = angular.module 'SignalControl', ['ui.directives','ngSanitize']
 
 SignalControl.factory 'socket', ['$rootScope', ($rootScope) ->
-	socket = io.connect '/newui'
+	socket = io.connect window.location.origin + '/newui'
 	return {
 		on: (event, callback) ->
 			socket.on event, ->
@@ -23,6 +23,9 @@ SignalControlMain = ['$scope','socket', ($scope, socket) ->
 	socket.on 'update', (data) ->
 		setupControl data
 
+	socket.on 'setup:show', (data) ->
+		setupControl data
+
 	validTags = [
 		["V", /^Verse(?:| ((?:[0-9])*))\n$/gim]
 		["C", /^Chorus(?:| ((?:[0-9])*))\n$/gim]
@@ -34,34 +37,40 @@ SignalControlMain = ['$scope','socket', ($scope, socket) ->
 	extras = ["I","T","END"]
 	swich = true
 	setupControl = (data) ->
+		console.log data
 		if not data.control? then return false
+		$scope.item = '' # Next Song
+		$scope.current = '' #current Song
 		lyrics  = angular.copy data.control.live
 		tags = []
+		index = 0
 		for lyric in lyrics
 			found = false
 			for tag in tags
 				if lyric.tag is tag
 					found = true
 					break
-			if not found then tags.push lyric.tag
+			if not found then tags.push [lyric.tag, index]
+			index++
 
 		tags2 = []
 		for test in validTags
 			for tag in tags
-				res = test[1].exec tag
+				res = test[1].exec tag[0]
 				if res
-					tags2.push if res[1]? then {name:"#{test[0]}#{res[1]}", color:randomColor()} else {name:test[0], color:randomColor()}
-		tags2.push {name:tag, color:randomColor()} for tag in extras
-		$scope.tags = lyrics
+					tags2.push if res[1]? then {name:"#{test[0]}#{res[1]}", color:randomColor(), id:tag[1]} else {name:test[0], color:randomColor(), id:tag[1]}
+		tags2.push {name:tag, color:randomColor(), id:tag} for tag in extras
+		$scope.tags = tags2
 		swich = !swich
-		console.log tags2
 
 	abs = (num) ->
 		Math.floor num
 
 	socket.on 'set:nextItem', (data) ->
-		console.log data
 		$scope.item = data
+
+	$scope.setNext = (index) ->
+		console.log index
 
 	hsvToRgb = (h, s, v) ->
 		h_i = (h * 6)

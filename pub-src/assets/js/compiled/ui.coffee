@@ -186,6 +186,8 @@ ctrl = ['$scope','Server','Songs','$timeout', ($scope,srv, songs, $timeout)->
 		srv.set 'live',
 			status: $scope.status
 			control: $scope.control
+			songIndex: $scope.songIndex
+
 		## Do last so we can grab correct song index first
 		if $scope.control.setlist[$scope.songIndex + 1]?
 			$scope.songIndex++

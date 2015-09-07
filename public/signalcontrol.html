@@ -13,7 +13,7 @@
 				<div class="song">Next: {{item}}</div>
 			</div>
 			<div class="row">
-				<div ng-repeat="item in tags" class="span1 tag" style="color:{{item.color}}"><span>{{item.name}}</span></div>
+				<div ng-repeat="check in tags" ng-click='setNext(check.id)' class="span1 tag" style="background-color:{{ check.color }}"><span>{{check.name}}</span></div>
 			</div>
 		</div>
 		<script type="text/javascript" src="assets/js/jquery.min.js"></script>

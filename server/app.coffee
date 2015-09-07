@@ -120,6 +120,8 @@ iq.of('/newui').on 'connection', (socket) ->
 		socket.broadcast.emit 'setup:show',
 			lyrics: data.control.live
 			display: data.status
+			control: control
+			songIndex: data.songIndex
 		socket.emit 'update',
 			status: status
 			control: control
