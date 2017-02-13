@@ -3,9 +3,10 @@ let mainWindow = null,
 
 const url = require('url'),
       path = require('path'),
+      loadDevtool = require('electron-load-devtool'),
       createWindow = _ => {
           // Create a new browser window
-          mainWindow = new BrowserWindow({width: 800, height: 600})
+          mainWindow = new BrowserWindow({minWidth: 800, minHeight: 600, show: false})
           switch (stage) {
             default:
               mainWindow.loadURL(url.format({
@@ -17,9 +18,15 @@ const url = require('url'),
 
             case "development":
               mainWindow.loadURL('http://localhost:8033')
+              loadDevtool(loadDevtool.REACT_DEVELOPER_TOOLS)
+              loadDevtool(loadDevtool.REDUX_DEVTOOLS)
               mainWindow.webContents.openDevTools()
               break
           }
+
+          mainWindow.once('ready-to-show', () => {
+            mainWindow.show()
+          })
 
 
           mainWindow.on('closed', _ => {
