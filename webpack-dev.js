@@ -33,7 +33,7 @@ var path          = require('path'),
 module.exports = {
 
   // Enable source maps as a devtool
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   context: __dirname,
 
   // Setup the entry point for the react application

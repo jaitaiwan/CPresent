@@ -1,5 +1,5 @@
 import React from 'react'
-// import styles from 'layouts/app.sass'
+import styles from 'layouts/app.sass'
 const App = ({children}) => (<div>
   {children}
 </div>)
